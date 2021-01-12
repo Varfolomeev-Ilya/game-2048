@@ -1,6 +1,6 @@
 body, html {
   width: 100%;
-  height: 100%:
+  height: 100%;
   padding: 0px;
   margin: 0px;
   overflow: hidden;
@@ -9,5 +9,16 @@ body, html {
 .container {
   width:100%;
   height:100%;
+
+}
+
+.logo {
+  height: 100%;
+  width: 100%;
+  opacity: .2;
+  
+}
+
+.scoreBar {
   
 }
