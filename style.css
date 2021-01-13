@@ -1,36 +1,29 @@
-body, html {
-  width: 100%;
-  height: 100%;
-  padding: 0px;
-  margin: 0px;
-  overflow: hidden;
-}
-
-.grid{
-  width:400px;
-  height:400px;
-  background-color: #876432;
-  margin-top: 30px;
+.grid {
   display: flex;
   flex-wrap: wrap;
+  width:400px;
+  height:400px;
+  background-color: #328187;
+  
 }
 
 .grid div {
   width: 100px;
   height: 100px;
-  background-color: #86436311;
-}
-
-.scoreBar {
-  width:400px;
-  height:50px;
-  background-color: #876432;
-  
-}
-
-.scoreBar {
+  background-color: #ecdf6911;
+  font-size: 50px;
+  font-weight: bold;
   text-align: center;
 }
+
+.score-container {
+  width:400px;
+  height:50px;
+  background-color: #328187;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
 .info {
   margin-top: 50px;
 }
