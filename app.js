@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let squares = [];
 
 
-      //playing board
+    //playing board
 
     function createBoard() {
       for (let i=0 ; i < width*width; i++) {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-      //random numbers
+    //random numbers
 
      function generate() {
        let randomNumbers = Math.floor(Math.random() * squares.length)
@@ -31,8 +31,22 @@ document.addEventListener('DOMContentLoaded', () => {
           squares[randomNumbers].innerHTML = 2
        } else generate()
      } 
+     
 
+    //swipe left
 
+     function moweLeft() {
+       for(let i=0; i < width*width ; i++) {
+         if (i % 4 === 0) {
+          let one = square.innerHTML[i];
+          let two = square.innerHTML[i+1];
+          let three = square.innerHTML[i+2];
+          let four = square.innerHTML[i+3];
+          let leftsum = parseInt(one + two + three+four);
+         }
+       }
+     }
+      moweLeft()
 
 
 
