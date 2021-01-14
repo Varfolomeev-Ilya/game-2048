@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
         squares.push(square);
       }
       generate()
-      generate()
-      generate()
-      generate()
-      generate()
+      
+      
+      
+      
       
 
     }
@@ -30,10 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
      function generate() {
        let randomNumbers = Math.floor(Math.random() * squares.length)
        if (squares[randomNumbers].innerHTML === '0') {
-          squares[randomNumbers].innerHTML = 2
-          
-          
+          squares[randomNumbers].innerHTML = 2 
        } else generate()
+              
+        
      } 
 
     //  function generateFour() {
@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // console.log(zeros); 
             let newRow = zeros.concat(filteredRow);
             // console.log(newRow);
+           
 
             squares[i].innerHTML = newRow[0];
             squares[i+1].innerHTML = newRow[1];
@@ -95,30 +96,32 @@ document.addEventListener('DOMContentLoaded', () => {
             // console.log(zeros); 
             let newRow = filteredRow.concat(zeros);
             // console.log(newRow);
-
+          
+          
             squares[i].innerHTML = newRow[0];
             squares[i+1].innerHTML = newRow[1];
             squares[i+2].innerHTML = newRow[2];
             squares[i+3].innerHTML = newRow[3];
-
+          
+            
        }
       } 
      }   
     
 
      function combineRow() {
-       for (let i = 0; i < 16; i++) {
-         if (squares[i].innerHTML === squares[i+1].innerHTML) {
-           let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
-           squares[i].innerHTML = combineTotal;
-           squares[i+1].innerHTML = 0;
-         }
+       for (let i = 3; i >= 1; i++) {
+          let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
+          if (squares[i].innerHTML === squares[i+1].innerHTML) {
+              squares[i].innerHTML = combineTotal;
+              squares[i+1].innerHTML = 0;
+           break;
+          }
        }
+       
      }
 
      //keycodes
-     
-
     function control(e) {
       if(e.keyCode === 39) {
         arrowRight()
@@ -131,18 +134,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keyup', control)
 
     function arrowRight() {
-      moveRight()
-      combineRow()
-      moveRight()
-      generate()
-    }
+      moveRight();
+      combineRow();
+      moveRight();
+      generate();
+    };
 
     function arrowLeft() {
-      moveLeft()
-      combineRow()
-      moveLeft()
-      generate()
-    }
+      moveLeft();
+      combineRow();
+      moveLeft();
+      generate();
+    };
 
 
 })
