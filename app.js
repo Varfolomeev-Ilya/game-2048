@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
         gridDisplay.appendChild(square);
         squares.push(square);
       }
-      generate()
-      generate()
+      generateTwo()
+      generateFour()
 
     }
      createBoard()
@@ -25,12 +25,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //random numbers
 
-     function generate() {
+     function generateTwo() {
        let randomNumbers = Math.floor(Math.random() * squares.length)
-       if (squares[randomNumbers].innerHTML == 0) {
+       if (squares[randomNumbers].innerHTML === '0') {
           squares[randomNumbers].innerHTML = 2
-       } else generate()
+          
+          
+       } else generateTwo()
      } 
+
+     function generateFour() {
+      let randomNumbers = Math.floor(Math.random() * squares.length)
+      if (squares[randomNumbers].innerHTML === '0') {
+         squares[randomNumbers].innerHTML = 4
+         
+         
+      } else generateFour()
+    } 
      
 
     //swipe left
