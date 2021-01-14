@@ -42,10 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
           let two = square.innerHTML[i+1];
           let three = square.innerHTML[i+2];
           let four = square.innerHTML[i+3];
-          let leftsum = parseInt(one + two + three+four);
-         }
-       }
-     }
+          let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
+        
+          console.log(row);
+
+          let filteredRow = row.filter(num => num) 
+          console.log(filteredRow);
+
+          
+
+
+
+
+        }
+       } 
+      }   
       moweLeft()
 
 
