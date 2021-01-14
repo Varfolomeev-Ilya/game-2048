@@ -15,66 +15,134 @@ document.addEventListener('DOMContentLoaded', () => {
         gridDisplay.appendChild(square);
         squares.push(square);
       }
-      generateTwo()
-      generateFour()
+      generate()
+      generate()
+      generate()
+      generate()
+      generate()
+      
 
     }
      createBoard()
 
-
-
     //random numbers
 
-     function generateTwo() {
+     function generate() {
        let randomNumbers = Math.floor(Math.random() * squares.length)
        if (squares[randomNumbers].innerHTML === '0') {
           squares[randomNumbers].innerHTML = 2
           
           
-       } else generateTwo()
+       } else generate()
      } 
 
-     function generateFour() {
-      let randomNumbers = Math.floor(Math.random() * squares.length)
-      if (squares[randomNumbers].innerHTML === '0') {
-         squares[randomNumbers].innerHTML = 4
+    //  function generateFour() {
+    //   let randomNumbers = Math.floor(Math.random() * squares.length)
+    //   if (squares[randomNumbers].innerHTML === '0') {
+    //      squares[randomNumbers].innerHTML = 4
          
          
-      } else generateFour()
-    } 
+    //   } else generateFour()
+    // } 
      
+    //swipe right
 
-    //swipe left
-
-     function moweLeft() {
+     function moveRight() {
        for(let i=0; i < width*width ; i++) {
          if (i % 4 === 0) {
-          let one = square.innerHTML[i];
-          let two = square.innerHTML[i+1];
-          let three = square.innerHTML[i+2];
-          let four = square.innerHTML[i+3];
-          let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
-        
-          console.log(row);
-
-          let filteredRow = row.filter(num => num) 
-          console.log(filteredRow);
-
+            let one = squares[i].innerHTML;
+            let two = squares[i+1].innerHTML;
+            let three = squares[i+2].innerHTML;
+            let four = squares[i+3].innerHTML;
+            let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
           
+            // console.log(row);
 
+            let filteredRow = row.filter(num => num) 
+            // console.log(filteredRow);
+            let missing = 4 - filteredRow.length;
+            let zeros = Array(missing).fill(0);
+            // console.log(zeros); 
+            let newRow = zeros.concat(filteredRow);
+            // console.log(newRow);
 
-
+            squares[i].innerHTML = newRow[0];
+            squares[i+1].innerHTML = newRow[1];
+            squares[i+2].innerHTML = newRow[2];
+            squares[i+3].innerHTML = newRow[3];
 
         }
        } 
       }   
-      moweLeft()
+      
+     //swipe left
 
+     function moveLeft() {
+      for(let i=0; i < width*width ; i++) {
+        if (i % 4 === 0) {
+            let one = squares[i].innerHTML;
+            let two = squares[i+2].innerHTML;
+            let three = squares[i+2].innerHTML;
+            let four = squares[i+3].innerHTML;
+            let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
+          
+            // console.log(row);
 
+            let filteredRow = row.filter(num => num) 
+            // console.log(filteredRow);
+            let missing = 4 - filteredRow.length;
+            let zeros = Array(missing).fill(0);
+            // console.log(zeros); 
+            let newRow = filteredRow.concat(zeros);
+            // console.log(newRow);
 
+            squares[i].innerHTML = newRow[0];
+            squares[i+1].innerHTML = newRow[1];
+            squares[i+2].innerHTML = newRow[2];
+            squares[i+3].innerHTML = newRow[3];
 
+       }
+      } 
+     }   
+    
 
+     function combineRow() {
+       for (let i = 0; i < 16; i++) {
+         if (squares[i].innerHTML === squares[i+1].innerHTML) {
+           let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
+           squares[i].innerHTML = combineTotal;
+           squares[i+1].innerHTML = 0;
+         }
+       }
+     }
 
+     //keycodes
+     
+
+    function control(e) {
+      if(e.keyCode === 39) {
+        arrowRight()
+      } else if (e.keyCode === 37) {
+        arrowLeft() 
+      }
+      
+    }    
+
+    document.addEventListener('keyup', control)
+
+    function arrowRight() {
+      moveRight()
+      combineRow()
+      moveRight()
+      generate()
+    }
+
+    function arrowLeft() {
+      moveLeft()
+      combineRow()
+      moveLeft()
+      generate()
+    }
 
 
 })
