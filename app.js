@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
        let randomNumbers = Math.floor(Math.random() * squares.length)
        if (squares[randomNumbers].innerHTML === '0') {
           squares[randomNumbers].innerHTML = 2 
+          checkLoose()
        } else generate();
               
        
@@ -225,7 +226,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
-        
+  
+  // check loose
+  function checkLoose() {
+    let zeros = 0;
+    for (let i= 0; i < squares.length; i++) {
+      if (squares[i].innerHTML == 0) {
+        zeros++;
+      }
+    }
+    if (zeros == 0 ) {
+      resultDisplay.innerHTML = 'You DIED!';
+      document.removeEventListener('keyup', control);
+    }
+      
+  } 
+
 
   
 
