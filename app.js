@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let filteredColumn = column.filter(num => num);
       let missing = 4 - filteredColumn.length;
       let zeros = Array(missing).fill;
-      let newColumn = filteredColumn.concat(zeros);
+      let newColumn = filteredColumn.concat(filteredColumn);
 
       squares[i].innerHTML = newColumn[0];
       squares[i+width].innerHTML = newColumn[1];
@@ -170,5 +170,30 @@ document.addEventListener('DOMContentLoaded', () => {
      } 
 
   }
+
+
+    // move UP
+    function moveUp() {
+      for (let i = 0; i < 4; i++) {
+      let one = squares[i].innerHTML;
+      let two = squares[i+width].innerHTML;
+      let three = squares[i+(width*2)].innerHTML;
+      let four = squares[i+(width*3)].innerHTML;
+      let column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
+
+      let filteredColumn = column.filter(num => num);
+      let missing = 4 - filteredColumn.length;
+      let zeros = Array(missing).fill;
+      let newColumn = filteredColumn.concat(zeros);
+
+      squares[i].innerHTML = newColumn[0];
+      squares[i+width].innerHTML = newColumn[1];
+      squares[i+width*2].innerHTML = newColumn[2];
+      squares[i+width*3].innerHTML = newColumn[3];
+    } 
+
+  }
+
+
 
 })
