@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const resultDisplay = document.getElementById('.result');
   const width = 4;
   let squares = [];
+  let score = 0;
+ 
 
     //playing board
 
@@ -20,17 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
      createBoard()
 
+    
+
+
     //random numbers
 
      function generate() {
        let randomNumbers = Math.floor(Math.random() * squares.length)
        if (squares[randomNumbers].innerHTML === '0') {
           squares[randomNumbers].innerHTML = 2 
-       } else generate()
+       } else generate();
               
        
      } 
-
 
      function moveRight() {
        for(let i=0; i < width*width ; i++) {
@@ -99,9 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
           if (squares[i].innerHTML === squares[i+1].innerHTML) {
               squares[i].innerHTML = combineTotal;
               squares[i+1].innerHTML = 0;
-          
+              // score += combineTotal;
+              // scoreDisplay.innerHTML = score.toString();
+              
           }
        }  
+       checkWin()
      }
 
 
@@ -112,9 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (squares[i].innerHTML === squares[i+width].innerHTML) {
            squares[i].innerHTML = combineTotal;
            squares[i+width].innerHTML = 0;
-       
+          //  score += combineTotal;
+          //  scoreDisplay.innerHTML = score.toString();
+           
         }
       }
+      checkWin()
     }
      //keycodes
     function control(e) {
@@ -205,9 +215,18 @@ document.addEventListener('DOMContentLoaded', () => {
     } 
 
   }
-
+  
+  // check win
+  function checkWin(){
+    for(let i=0; i < squares.length; i++) {
+      if (squares[i].innerHTML === 2048) {
+          resultDisplay.innerHTML = 'you win';
+          document.removeEventListener('keyup', control);
+      }
+    }
+  }
+        
 
   
-
 
 })
