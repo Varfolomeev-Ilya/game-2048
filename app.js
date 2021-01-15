@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
       for(let i=0; i < width*width ; i++) {
         if (i % 4 === 0) {
             let one = squares[i].innerHTML;
-            let two = squares[i+2].innerHTML;
+            let two = squares[i+1].innerHTML;
             let three = squares[i+2].innerHTML;
             let four = squares[i+3].innerHTML;
             let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let missing = 4 - filteredRow.length;
             let zeros = Array(missing).fill(0);
             // console.log(zeros); 
+            
             let newRow = filteredRow.concat(zeros);
             // console.log(newRow);
           
@@ -110,12 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
      function combineRow() {
-       for (let i = 3; i >= 1; i++) {
+       for (let i = 0; i < 15; i++) {
           let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
           if (squares[i].innerHTML === squares[i+1].innerHTML) {
               squares[i].innerHTML = combineTotal;
               squares[i+1].innerHTML = 0;
-           break;
+          
           }
        }
        
