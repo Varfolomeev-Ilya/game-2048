@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gridDisplay = document.querySelector('.grid');
   const scoreDisplay = document.getElementById('score');
   const resultDisplay = document.getElementById('result');
+  const bestDisplay = document.getElementById('best');
   const width = 4;
   let squares = [];
   let score = 0;
@@ -121,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (squares[i].innerHTML === squares[i+width].innerHTML) {
            squares[i].innerHTML = combineTotal;
            squares[i+width].innerHTML = 0;
-            score += combineTotal;
-            scoreDisplay.innerHTML = score;
+           score += combineTotal;
+           scoreDisplay.innerHTML = score;
            
         }
       }
@@ -240,9 +241,13 @@ document.addEventListener('DOMContentLoaded', () => {
       resultDisplay.innerHTML = 'You DIED!';
       document.removeEventListener('keyup', control);
     }
-      
+    if (zeros === 0) {
+      bestDisplay.innerHTML = score;
+      document.removeEventListener('keyup', control);
+    }  
   } 
 
+  
 
   
 
