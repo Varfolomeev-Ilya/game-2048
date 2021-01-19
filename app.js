@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const gridDisplay = document.querySelector('.grid');
-  const scoreDisplay = document.getElementById('.score');
-  const resultDisplay = document.getElementById('.result');
+  const scoreDisplay = document.getElementById('score');
+  const resultDisplay = document.getElementById('result');
   const width = 4;
   let squares = [];
   let score = 0;
@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
           squares[randomNumbers].innerHTML = 2 
           checkLoose()
        } else generate();
+          
               
        
      } 
@@ -104,12 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
           if (squares[i].innerHTML === squares[i+1].innerHTML) {
               squares[i].innerHTML = combineTotal;
               squares[i+1].innerHTML = 0;
-              // score += combineTotal;
-              // scoreDisplay.innerHTML = score.toString();
+              score += combineTotal;
+              scoreDisplay.innerHTML = score;
               
           }
        }  
-       checkWin()
+        checkWin()
      }
 
 
@@ -120,8 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (squares[i].innerHTML === squares[i+width].innerHTML) {
            squares[i].innerHTML = combineTotal;
            squares[i+width].innerHTML = 0;
-          //  score += combineTotal;
-          //  scoreDisplay.innerHTML = score.toString();
+            score += combineTotal;
+            scoreDisplay.innerHTML = score;
            
         }
       }
@@ -218,9 +219,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // check win
-  function checkWin(){
+  function checkWin() {
     for(let i=0; i < squares.length; i++) {
-      if (squares[i].innerHTML === 2048) {
+      if (squares[i].innerHTML == 2048) {
           resultDisplay.innerHTML = 'you win';
           document.removeEventListener('keyup', control);
       }
@@ -235,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
         zeros++;
       }
     }
-    if (zeros == 0 ) {
+    if (zeros === 0 ) {
       resultDisplay.innerHTML = 'You DIED!';
       document.removeEventListener('keyup', control);
     }
