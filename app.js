@@ -35,9 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
        let randomNumbers = Math.floor(Math.random() * squares.length)
        if (squares[randomNumbers].innerHTML == 0) {
           squares[randomNumbers].innerHTML = 2;
-          checkLoose()
-       }else generate();
-            
+          checkLoose();
+       }else generate();            
            
      } 
 
@@ -69,13 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
        } 
       }   
       
-      // function checkZero() {
-      //   if (missing = 0) {
-      //     missing = " "
-      //   }
-      // }
-     //swipe left
-
      function moveLeft() {
       for(let i=0; i < width*width ; i++) {
         if (i % 4 === 0) {
@@ -105,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
       //  combine Row
      function combineRow() {
-          for (let i = 0; i < 15; i++) {
+          for (let i = 0; i < 15  ; i++) {
           let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
           if (squares[i].innerHTML === squares[i+1].innerHTML) {
               squares[i].innerHTML = combineTotal;
@@ -228,46 +220,45 @@ document.addEventListener('DOMContentLoaded', () => {
   // check win
   function checkWin() {
     for(let i=0; i < squares.length; i++) {
-      if (squares[i].innerHTML === '8') {
+      if(squares[i].innerHTML === '2048') {
           resultDisplay.innerHTML = 'You win';
           document.removeEventListener('keyup', control);
+      } if(bestValue < squares.length){
+        bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
+        localStorage.setItem('bestValue', bestDisplay.innerHTML);
+      } if(localStorage.getItem('bestValue', bestDisplay.innerHTML) < score) {
+        bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
+        localStorage.setItem('bestValue', bestDisplay.innerHTML);
       }
     }
   }
   
-  // check loose
-  function checkLoose() {
-    let zeros = 0;
-    for (let i= 0; i < squares.length; i++) {
-      if (squares[i].innerHTML == 0) {
-        zeros++;
+    // check loose
+    function checkLoose() {
+      let zeros = 0;
+      for (let i= 0; i < squares.length; i++) {
+        if (squares[i].innerHTML == '0') {
+          zeros++;
+        }
       }
-    }
     //bestscore
-    if (zeros === 0 ) {
-      resultDisplay.innerHTML = 'You DIED!';
+    if (zeros === '0') {
+      resultDisplay.innerHTML = 'Game over';
       document.removeEventListener('keyup', control);
-      if (bestValue === '0'){
-      bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
-      localStorage.setItem('bestValue', bestDisplay.innerHTML);
-    }
+    //   if (bestValue == '0'){
+    //     bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
+    //     localStorage.setItem('bestValue', bestDisplay.innerHTML);
+    // }
       document.removeEventListener('keyup', control);
     }
     
   } 
 
     // new game
-    // let button = document.querySelector("restart");
-    // button.addEventListener("click", function() { 
-    // });
-    
     function clickButton() {    
       alert("Start new game")
     }
-   
-      
-      
-    
+
     restart.onclick = clickButton;
  
   
