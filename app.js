@@ -3,9 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreDisplay = document.getElementById('score');
   const resultDisplay = document.getElementById('result');
   const bestDisplay = document.getElementById('best');
+  let button = document.getElementById("restart");
   const width = 4;
   let squares = [];
   let score = 0;
+  const scoreStorage = localStorage.getItem('bestValue');
+  let bestValue = scoreStorage || '0';
  
 
     //playing board
@@ -13,30 +16,25 @@ document.addEventListener('DOMContentLoaded', () => {
     function createBoard() {
       for (let i=0 ; i < width*width; i++) {
         square = document.createElement('div');
-        square.innerHTML = 0;
+        square.innerHTML = " ";
         gridDisplay.appendChild(square);
         squares.push(square);
-      }
+      }      
       generate()
       generate()
 
     }
      createBoard()
-
-    
-
-
+  
     //random numbers
 
      function generate() {
        let randomNumbers = Math.floor(Math.random() * squares.length)
-       if (squares[randomNumbers].innerHTML === '0') {
+       if (squares[randomNumbers].innerHTML == 0) {
           squares[randomNumbers].innerHTML = 2 
           checkLoose()
        } else generate();
-          
-              
-       
+           
      } 
 
      function moveRight() {
@@ -53,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let filteredRow = row.filter(num => num) 
             // console.log(filteredRow);
             let missing = 4 - filteredRow.length;
-            let zeros = Array(missing).fill(0);
+            let zeros = Array(missing).fill(" ");
             // console.log(zeros); 
             let newRow = zeros.concat(filteredRow);
             // console.log(newRow);
@@ -84,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let filteredRow = row.filter(num => num) 
             // console.log(filteredRow);
             let missing = 4 - filteredRow.length;
-            let zeros = Array(missing).fill(0);
+            let zeros = Array(missing).fill(" ");
             // console.log(zeros); 
 
             let newRow = filteredRow.concat(zeros);
@@ -113,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
        }  
         checkWin()
      }
-
 
       // combine Column
       function combineColumn() {
@@ -185,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let filteredColumn = column.filter(num => num);
       let missing = 4 - filteredColumn.length;
-      let zeros = Array(missing).fill(0);
+      let zeros = Array(missing).fill(" ");
       let newColumn = zeros.concat(filteredColumn);
 
       squares[i].innerHTML = newColumn[0];
@@ -208,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let filteredColumn = column.filter(num => num);
       let missing = 4 - filteredColumn.length;
-      let zeros = Array(missing).fill(0);
+      let zeros = Array(missing).fill(" ");
       let newColumn = filteredColumn.concat(zeros);
 
       squares[i].innerHTML = newColumn[0];
@@ -237,18 +234,30 @@ document.addEventListener('DOMContentLoaded', () => {
         zeros++;
       }
     }
+    //bestscore
     if (zeros === 0 ) {
       resultDisplay.innerHTML = 'You DIED!';
       document.removeEventListener('keyup', control);
+      if (bestValue === '0'){
+      bestDisplay.innerHTML = scoreDisplay.innerHTML > parseInt(bestValue) ? score : bestValue;
+      localStorage.setItem('bestValue', bestValue);
     }
-    if (zeros === 0) {
-      bestDisplay.innerHTML = score;
       document.removeEventListener('keyup', control);
-    }  
+    }
   } 
 
+    // new game
+    // let button = document.querySelector("restart");
+    // button.addEventListener("click", function() { 
+    // });
+    
+    function clickButton() {
+      alert("Play new game");
+    }
+    restart.onclick = clickButton;
+ 
   
-
-  
-
 })
+
+  
+ 

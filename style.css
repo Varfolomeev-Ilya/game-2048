@@ -75,10 +75,10 @@ h1.title {
 }
 
 .result {
-  max-width:550px;
-  max-height:550px; 
-  margin-left: auto;
+  max-width:100px;
+  max-height:30px; 
   margin-right: auto;
+  font-size: 100px;
 }
 
 .grid div {
