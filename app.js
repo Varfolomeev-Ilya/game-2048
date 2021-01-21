@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreStorage = localStorage.getItem('bestValue');
   let bestValue = !scoreStorage ? '0' : scoreStorage;
   bestDisplay.innerHTML = bestValue;
- 
+  
+  
 
     //playing board
 
@@ -19,9 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
         square.innerHTML = " ";
         gridDisplay.appendChild(square);
         squares.push(square);
+        
       } 
       generate()
       generate()
+      
       
     }
      createBoard()
@@ -36,7 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
        if (squares[randomNumbers].innerHTML == 0) {
           squares[randomNumbers].innerHTML = 2;
           checkLoose();
-       }else generate();            
+       }else generate();  
+          colorSwitch();          
            
      } 
 
@@ -258,11 +262,47 @@ document.addEventListener('DOMContentLoaded', () => {
     function clickButton() {    
       alert("Start new game")
     }
-
     restart.onclick = clickButton;
- 
-  
+    
+    // ColorChange
+    function colorSwitch() {
+      for( let i = 0; i < squares.length; i++) {
+        // console.log(squares[i]); 
+        if (squares[i].innerHTML == 0) {
+          squares[i].style.backgroundColor = "#bababaeb";
+        }if(squares[i].innerHTML == 2) {
+            squares[i].style.backgroundColor = "#f7ababeb";
+            // console.log(squares[i].innerHTML)   
+        }if(squares[i].innerHTML == 4) {
+          squares[i].style.backgroundColor = "#f7abf0eb";
+        }if(squares[i].innerHTML == 8) {
+          squares[i].style.backgroundColor = "#d1abf7eb";
+        }if(squares[i].innerHTML == 16) {
+          squares[i].style.backgroundColor = "#abb2f7eb";
+        }if(squares[i].innerHTML == 32) {
+          squares[i].style.backgroundColor = "#9abe9f7eb";
+        }if(squares[i].innerHTML == 64) {
+          squares[i].style.backgroundColor = "#abf7e0eb";
+        }if(squares[i].innerHTML == 128) {
+          squares[i].style.backgroundColor = "#abf7bbeb";
+        }if(squares[i].innerHTML == 256) {
+          squares[i].style.backgroundColor = "#bff7abeb";
+        }if(squares[i].innerHTML == 512) {
+          squares[i].style.backgroundColor = "#daf7abeb";
+        }if(squares[i].innerHTML == 1024) {
+          squares[i].style.backgroundColor = "#7f1f7abeb";
+        }if(squares[i].innerHTML == 2048) {
+          squares[i].style.backgroundColor = "#fa6e32eb";
+        }
+      }
+    }
+    
+
 })
+
+
+
+
 
   
  
