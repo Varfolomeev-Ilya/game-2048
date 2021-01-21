@@ -9,11 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreStorage = localStorage.getItem('bestValue');
   let bestValue = !scoreStorage ? '0' : scoreStorage;
   bestDisplay.innerHTML = bestValue;
-  
-  
 
     //playing board
-
     function createBoard() {
       for (let i=0 ; i < width*width; i++) {
         square = document.createElement('div');
@@ -30,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
      createBoard()
  
     //random numbers
-
      function generate() {
        let randomNumbers = Math.floor(Math.random() * squares.length)
        if (squares[randomNumbers].innerHTML == 0) {
@@ -54,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let filteredRow = row.filter(num => num) 
             // console.log(filteredRow);
             let missing = 4 - filteredRow.length;
-            let zeros = Array(missing).fill(" ");
+            let zeros = Array(missing).fill("");
             // console.log(zeros.length); 
             let newRow = zeros.concat(filteredRow);
             // console.log(newRow);
@@ -96,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
          
        
     
-      // swipw down
+      // swipe down
       function moveDown() {
         for (let i = 0; i < 4; i++) {
         let one = squares[i].innerHTML;
@@ -120,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-      // move UP
+      // swipe UP
       function moveUp() {
         for (let i = 0; i < 4; i++) {
         let one = squares[i].innerHTML;
@@ -132,11 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let filteredColumn = column.filter(num => num);
         let missing = 4 - filteredColumn.length;
         let zeros = Array(missing).fill(" ");
-        // if (zeros.length === 0) {
-        // document.removeEventListener('keyup', control);
-        // resultDisplay.innerHTML = 'Game over';
-        // }
-        // console.log(zeros.length)
         let newColumn = filteredColumn.concat(zeros);
 
         squares[i].innerHTML = newColumn[0];
@@ -270,7 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
       scoreDisplay.innerHTML = 0;
 
     }
-  
   
     // Restart game
     function clearBord() {
