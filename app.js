@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreStorage = localStorage.getItem('bestValue');
   let bestValue = !scoreStorage ? '0' : scoreStorage;
   bestDisplay.innerHTML = bestValue;
+  restart.onclick = newGameButton;
+  document.addEventListener('keyup', control)
   const colors = {
     "0": "#bababaeb",
     "2": "#f7ababeb",
@@ -23,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     "1024": "#7f1f7abeb",
     "2048": "#fa6e32eb",
   }
+  
     //playing board
     function createBoard() {
       for (let i=0 ; i < width*width; i++) {
@@ -36,18 +39,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
      createBoard();
  
-    //random numbers
+    //random numbers on board
      function generate() {
        let randomNumbers = Math.floor(Math.random() * squares.length)
        if (squares[randomNumbers].innerHTML == 0) {
           squares[randomNumbers].innerHTML = 2;    
        } else generate(); 
           checkLoose(); 
-          colorSwitch();                  
+          colorChange();                  
      } 
 
-    //  swipe left and right
-     function moveRight() {
+    //  arrow left and right
+     function arrowRight() {
        for (let i=0; i < width*width ; i++) {
          if (i % 4 === 0) {
             let one = squares[i].innerHTML;
@@ -71,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
        } 
       }   
       
-     function moveLeft() {
+     function arrowLeft() {
       for (let i=0; i < width*width ; i++) {
         if (i % 4 === 0) {
             let one = squares[i].innerHTML;
@@ -96,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
       // swipe down
-      function moveDown() {
+      function arrowDown() {
         for (let i = 0; i < 4; i++) {
         let one = squares[i].innerHTML;
         let two = squares[i+width].innerHTML;
@@ -116,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
       // swipe UP
-      function moveUp() {
+      function arrowUp() {
         for (let i = 0; i < 4; i++) {
         let one = squares[i].innerHTML;
         let two = squares[i+width].innerHTML;
@@ -134,8 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
       } 
     }
 
-      // combine Row
-     function combineRow() {
+      // sum Row
+     function sumRow() {
           for (let i = 0; i < 15  ; i++) {
           let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
           if (squares[i].innerHTML === squares[i+1].innerHTML) {
@@ -149,8 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
         checkWin()
      }
 
-      // combine Column
-      function combineColumn() {
+      // sum Column
+      function sumColumn() {
         for (let i = 0; i < 12; i++) {
         let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+width].innerHTML);
         if (squares[i].innerHTML === squares[i+width].innerHTML) {
@@ -167,50 +170,48 @@ document.addEventListener('DOMContentLoaded', () => {
      //keycodes
     function control(e) {
       if (e.keyCode === 39) {
-        arrowRight();
+        swipeRight();
       } else if (e.keyCode === 37) {
-        arrowLeft();
+        swipeLeft();
       } else if (e.keyCode === 40) {
-        keyDown();
+        swipeDown();
       } else if (e.keyCode === 38) {
-        keyUp();
+        swipeUp();
       }
     }    
 
-    document.addEventListener('keyup', control)
-
-    function arrowRight() {
-      moveRight();
-      combineRow();
-      moveRight();
+    function swipeRight() {
+      arrowRight();
+      sumRow();
+      arrowRight();
       generate();
     };
 
-    function arrowLeft() {
-      moveLeft();
-      combineRow();
-      moveLeft();
+    function swipeLeft() {
+      arrowLeft();
+      sumRow();
+      arrowLeft();
       generate();
     };
 
-    function keyDown() {
-      moveDown();
-      combineColumn();
-      moveDown();
+    function swipeDown() {
+      arrowDown();
+      sumColumn();
+      arrowDown();
       generate();
     }
 
-    function keyUp() {
-      moveUp();
-      combineColumn();
-      moveUp();
+    function swipeUp() {
+      arrowUp();
+      sumColumn();
+      arrowUp();
       generate();
     }
 
   // check win
   function checkWin() {
     for (let i=0; i < squares.length; i++) {
-      if (squares[i].innerHTML === '8') {
+      if (squares[i].innerHTML === '2048') {
           resultDisplay.innerHTML = 'You win';
       } if (bestValue < squares.length) {
         bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
@@ -254,34 +255,31 @@ document.addEventListener('DOMContentLoaded', () => {
          }
        } 
        
-    // new game
-    function clickButton() {    
-      clearBord();
+    // button New game
+    function newGameButton() {    
+      clearPlayingField();
       generate();
       generate();
-      clearGame();
+      clearResultScore();
     }
 
-    restart.onclick = clickButton;
-
     // clear score,scoredisplay,resultdisplay
-    function clearGame() {
+    function clearResultScore() {
       scoreDisplay.innerHTML = 0;
       score = 0;
       resultDisplay.innerHTML = '';
     }
   
-    // Clear gameboard
-    function clearBord() {
+    // Clear clearPlayingField
+    function clearPlayingField() {
       for (let i = 0; i < squares.length; i++) {
         squares[i].innerHTML = '';
       }
     }
     
     // ColorChange
-    function colorSwitch() {
-      for (let i = 0; i < squares.length; i++) {
-        // console.log(squares[i]); 
+    function colorChange() {
+      for (let i = 0; i < squares.length; i++) { 
         if (squares[i].innerHTML == 0) {
           squares[i].style.backgroundColor = "#bababaeb";
         }
