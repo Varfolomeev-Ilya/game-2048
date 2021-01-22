@@ -9,7 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreStorage = localStorage.getItem('bestValue');
   let bestValue = !scoreStorage ? '0' : scoreStorage;
   bestDisplay.innerHTML = bestValue;
-
+  const colors = {
+    "0": "#bababaeb",
+    "2": "#f7ababeb",
+    "4": "#f7abf0eb",
+    "8": "#d1abf7eb",
+    "16": "#abb2f7eb",
+    "32": "#9abe9f7eb",
+    "64": "#abf7e0eb",
+    "128": "#abf7bbeb",
+    "256": "#bff7abeb",
+    "512": "#daf7abeb",
+    "1024": "#7f1f7abeb",
+    "2048": "#fa6e32eb",
+  }
     //playing board
     function createBoard() {
       for (let i=0 ; i < width*width; i++) {
@@ -33,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
           colorSwitch();                  
      } 
 
+    //  swipe left and right
      function moveRight() {
        for (let i=0; i < width*width ; i++) {
          if (i % 4 === 0) {
@@ -40,8 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let two = squares[i+1].innerHTML;
             let three = squares[i+2].innerHTML;
             let four = squares[i+3].innerHTML;
-            let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
-          
+            let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];         
             // console.log(row);
             let filteredRow = row.filter(num => num) 
             // console.log(filteredRow);
@@ -50,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // console.log(zeros.length); 
             let newRow = zeros.concat(filteredRow);
             // console.log(newRow);
-
             squares[i].innerHTML = newRow[0];
             squares[i+1].innerHTML = newRow[1];
             squares[i+2].innerHTML = newRow[2];
@@ -82,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
+
       // swipe down
       function moveDown() {
         for (let i = 0; i < 4; i++) {
@@ -90,19 +103,18 @@ document.addEventListener('DOMContentLoaded', () => {
         let three = squares[i+(width*2)].innerHTML;
         let four = squares[i+(width*3)].innerHTML;
         let column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
-
         let filteredColumn = column.filter(num => num);
         let missing = 4 - filteredColumn.length;
-        let zeros = Array(missing).fill("");
+        let zeros = Array(missing).fill('');
         // console.log(zeros.length)
         let newColumn = zeros.concat(filteredColumn);
-
         squares[i].innerHTML = newColumn[0];
         squares[i+width].innerHTML = newColumn[1];
         squares[i+width*2].innerHTML = newColumn[2];
         squares[i+width*3].innerHTML = newColumn[3];
       }
     }
+
       // swipe UP
       function moveUp() {
         for (let i = 0; i < 4; i++) {
@@ -111,18 +123,17 @@ document.addEventListener('DOMContentLoaded', () => {
         let three = squares[i+(width*2)].innerHTML;
         let four = squares[i+(width*3)].innerHTML;
         let column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
-
         let filteredColumn = column.filter(num => num);
         let missing = 4 - filteredColumn.length;
-        let zeros = Array(missing).fill("");
+        let zeros = Array(missing).fill('');
         let newColumn = filteredColumn.concat(zeros);
-
         squares[i].innerHTML = newColumn[0];
         squares[i+width].innerHTML = newColumn[1];
         squares[i+width*2].innerHTML = newColumn[2];
         squares[i+width*3].innerHTML = newColumn[3];
       } 
     }
+
       // combine Row
      function combineRow() {
           for (let i = 0; i < 15  ; i++) {
@@ -137,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
        }  
         checkWin()
      }
+
       // combine Column
       function combineColumn() {
         for (let i = 0; i < 12; i++) {
@@ -149,8 +161,9 @@ document.addEventListener('DOMContentLoaded', () => {
            scoreDisplay.innerHTML = score;  
         }
       }
-      checkWin()
+      checkWin();
     }
+
      //keycodes
     function control(e) {
       if (e.keyCode === 39) {
@@ -197,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // check win
   function checkWin() {
     for (let i=0; i < squares.length; i++) {
-      if (squares[i].innerHTML === '2048') {
+      if (squares[i].innerHTML === '8') {
           resultDisplay.innerHTML = 'You win';
       } if (bestValue < squares.length) {
         bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
@@ -210,14 +223,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
     // check loose
     function checkLoose() {
+      let result = [];
+      for (let i =0; i < squares.length; i++) {
+        if (squares[i].innerHTML === '') {
+          result.push('');
+        }
+      }
       let rowCheck;
       let columnCheck; 
-      let zeros = 0;
-       if (zeros === 0) {
+      let zeros = 0; 
+      if (zeros === 0) {
         for (let i = 0; i < squares.length; i++) {
           for (let i = 0; i < 15 ; i++) {
            if (squares[i].innerHTML === squares[i+1].innerHTML) {
-              rowCheck = true;   
+              rowCheck = true;  
            } 
           }
         }         
@@ -228,9 +247,9 @@ document.addEventListener('DOMContentLoaded', () => {
               }
             }  
           }
-          if (!rowCheck && !columnCheck && !checkWin) {
-            document.removeEventListener('keyup', control);
+          if (!rowCheck && !columnCheck && result.length === 0) {
             resultDisplay.innerHTML = 'Game over';
+            document.removeEventListener('keyup', control);  
           }  
          }
        } 
@@ -265,33 +284,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // console.log(squares[i]); 
         if (squares[i].innerHTML == 0) {
           squares[i].style.backgroundColor = "#bababaeb";
-        }if (squares[i].innerHTML == 2) {
-            squares[i].style.backgroundColor = "#f7ababeb";
-        // console.log(squares[i].innerHTML);  
-        }if (squares[i].innerHTML == 4) {
-          squares[i].style.backgroundColor = "#f7abf0eb";
-        }if (squares[i].innerHTML == 8) {
-          squares[i].style.backgroundColor = "#d1abf7eb";
-        }if (squares[i].innerHTML == 16) {
-          squares[i].style.backgroundColor = "#abb2f7eb";
-        }if (squares[i].innerHTML == 32) {
-          squares[i].style.backgroundColor = "#9abe9f7eb";
-        }if (squares[i].innerHTML == 64) {
-          squares[i].style.backgroundColor = "#abf7e0eb";
-        }if (squares[i].innerHTML == 128) {
-          squares[i].style.backgroundColor = "#abf7bbeb";
-        }if (squares[i].innerHTML == 256) {
-          squares[i].style.backgroundColor = "#bff7abeb";
-        }if (squares[i].innerHTML == 512) {
-          squares[i].style.backgroundColor = "#daf7abeb";
-        }if (squares[i].innerHTML == 1024) {
-          squares[i].style.backgroundColor = "#7f1f7abeb";
-        }if (squares[i].innerHTML == 2048) {
-          squares[i].style.backgroundColor = "#fa6e32eb";
         }
+        squares[i].style.backgroundColor = colors[squares[i].innerHTML];
       }
-    }
-
+    } 
 })
 
 
