@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createBoard() {
       for (let i=0 ; i < width*width; i++) {
         square = document.createElement('div');
-        square.innerHTML = " ";
+        square.innerHTML = '';
         gridDisplay.appendChild(square);
         squares.push(square);
         
@@ -31,8 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
        let randomNumbers = Math.floor(Math.random() * squares.length)
        if (squares[randomNumbers].innerHTML == 0) {
           squares[randomNumbers].innerHTML = 2;
-          // checkLoose();
-       }else generate();  
+         
+       }else generate(); 
+          checkLoose(); 
           colorSwitch();          
            
      } 
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let filteredRow = row.filter(num => num) 
             // console.log(filteredRow);
             let missing = 4 - filteredRow.length;
-            let zeros = Array(missing).fill(" ");
+            let zeros = Array(missing).fill('');
             // console.log(zeros.length); 
             let newRow = filteredRow.concat(zeros);
             // console.log(newRow);
@@ -103,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let filteredColumn = column.filter(num => num);
         let missing = 4 - filteredColumn.length;
-        let zeros = Array(missing).fill(" ");
+        let zeros = Array(missing).fill("");
         // console.log(zeros.length)
         let newColumn = zeros.concat(filteredColumn);
 
@@ -127,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let filteredColumn = column.filter(num => num);
         let missing = 4 - filteredColumn.length;
-        let zeros = Array(missing).fill(" ");
+        let zeros = Array(missing).fill("");
         let newColumn = filteredColumn.concat(zeros);
 
         squares[i].innerHTML = newColumn[0];
@@ -216,9 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // check win
   function checkWin() {
     for(let i=0; i < squares.length; i++) {
-      if(squares[i].innerHTML === '2048') {
+      if(squares[i].innerHTML === '4') {
           resultDisplay.innerHTML = 'You win';
-          document.removeEventListener('keyup', control);
       } if(bestValue < squares.length){
         bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
         localStorage.setItem('bestValue', bestDisplay.innerHTML);
@@ -228,44 +228,59 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
-  
+ 
     // check loose
-    // function checkLoose() {
-    //   let zeros = 0;
-    //       for (let i = 0; i < squares.length; i++) {
-    //       if (squares[i].innerHTML == 0) {
-    //       zeros++;
-    //     }
-    //     if (zeros === " ") {
-    //      document.removeEventListener('keyup', control);
-    //      document.removeEventListener('keyup', control);
-    //      resultDisplay.innerHTML = 'Game over';
-    //     }
+    function checkLoose() {
+      // let zeros = 0;
+      //     for (let i = 0; i < squares.length; i++) {
+      //     if (squares[i].innerHTML === '') {
+      //     zeros++;
+      //   }
+      // }
+      //     if (zeros === 0) {
+      // document.removeEventListener('keyup', control);
+      // resultDisplay.innerHTML = 'Game over';
+      //     }
+      //    }
+
       
-    //   }
-    // }
-    
-   
+      for (let i = 0; i < 15  ; i++){
+        for (let i = 0; i < 12; i++){
+          if(squares[i].innerHTML == 0){
+            return false;
+          }if(i !== 1 && squares[i].innerHTML === squares[i+1].innerHTML){
+            return false;            
+          }if(i !== 1 && squares[i].innerHTML === squares[i+width].innerHTML){
+            return false;            
+          }
+        }     
+        document.removeEventListener('keyup', control);
+        resultDisplay.innerHTML = 'Game over';
+        return true;
+       }
+     } 
     
     // new game
     function clickButton() {    
       clearBord();
       generate();
       generate();
-      clearScore();
+      clearGame();
     }
 
     restart.onclick = clickButton;
 
-    function clearScore() {
+    // clear score,scoredisplay,resultdisplay
+    function clearGame() {
       scoreDisplay.innerHTML = 0;
-
+      score = 0;
+      resultDisplay.innerHTML = '';
     }
   
-    // Restart game
+    // Clear gameboard
     function clearBord() {
       for(let i = 0; i < squares.length; i++) {
-        squares[i].innerHTML = " ";
+        squares[i].innerHTML = '';
       }
     }
     
