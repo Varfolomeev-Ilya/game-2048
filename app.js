@@ -16,30 +16,25 @@ document.addEventListener('DOMContentLoaded', () => {
         square = document.createElement('div');
         square.innerHTML = '';
         gridDisplay.appendChild(square);
-        squares.push(square);
-        
+        squares.push(square);       
       } 
-      generate()
-      generate()
-      
-      
+      generate();
+      generate();
     }
-     createBoard()
+     createBoard();
  
     //random numbers
      function generate() {
        let randomNumbers = Math.floor(Math.random() * squares.length)
        if (squares[randomNumbers].innerHTML == 0) {
-          squares[randomNumbers].innerHTML = 2;
-         
-       }else generate(); 
+          squares[randomNumbers].innerHTML = 2;    
+       } else generate(); 
           checkLoose(); 
-          colorSwitch();          
-           
+          colorSwitch();                  
      } 
 
      function moveRight() {
-       for(let i=0; i < width*width ; i++) {
+       for (let i=0; i < width*width ; i++) {
          if (i % 4 === 0) {
             let one = squares[i].innerHTML;
             let two = squares[i+1].innerHTML;
@@ -51,23 +46,21 @@ document.addEventListener('DOMContentLoaded', () => {
             let filteredRow = row.filter(num => num) 
             // console.log(filteredRow);
             let missing = 4 - filteredRow.length;
-            let zeros = Array(missing).fill("");
+            let zeros = Array(missing).fill('');
             // console.log(zeros.length); 
             let newRow = zeros.concat(filteredRow);
             // console.log(newRow);
-           
 
             squares[i].innerHTML = newRow[0];
             squares[i+1].innerHTML = newRow[1];
             squares[i+2].innerHTML = newRow[2];
-            squares[i+3].innerHTML = newRow[3];
-           
+            squares[i+3].innerHTML = newRow[3]; 
         }   
        } 
       }   
       
      function moveLeft() {
-      for(let i=0; i < width*width ; i++) {
+      for (let i=0; i < width*width ; i++) {
         if (i % 4 === 0) {
             let one = squares[i].innerHTML;
             let two = squares[i+1].innerHTML;
@@ -89,10 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
-  
-         
-       
-    
       // swipe down
       function moveDown() {
         for (let i = 0; i < 4; i++) {
@@ -112,11 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
         squares[i+width].innerHTML = newColumn[1];
         squares[i+width*2].innerHTML = newColumn[2];
         squares[i+width*3].innerHTML = newColumn[3];
-       
-      
       }
     }
-
       // swipe UP
       function moveUp() {
         for (let i = 0; i < 4; i++) {
@@ -137,8 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
         squares[i+width*3].innerHTML = newColumn[3];
       } 
     }
-      
-
       // combine Row
      function combineRow() {
           for (let i = 0; i < 15  ; i++) {
@@ -149,13 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
               const value = !combineTotal ? 0 : combineTotal;
               score += value;
               scoreDisplay.innerHTML = score;
-              
-          
           }
        }  
         checkWin()
      }
-
       // combine Column
       function combineColumn() {
         for (let i = 0; i < 12; i++) {
@@ -172,16 +153,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
      //keycodes
     function control(e) {
-      if(e.keyCode === 39) {
-        arrowRight()
+      if (e.keyCode === 39) {
+        arrowRight();
       } else if (e.keyCode === 37) {
-        arrowLeft() 
-      } else if(e.keyCode === 40) {
-        keyDown()
-      } else if(e.keyCode === 38) {
-        keyUp()
+        arrowLeft();
+      } else if (e.keyCode === 40) {
+        keyDown();
+      } else if (e.keyCode === 38) {
+        keyUp();
       }
-
     }    
 
     document.addEventListener('keyup', control)
@@ -216,50 +196,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // check win
   function checkWin() {
-    for(let i=0; i < squares.length; i++) {
-      if(squares[i].innerHTML === '4') {
+    for (let i=0; i < squares.length; i++) {
+      if (squares[i].innerHTML === '2048') {
           resultDisplay.innerHTML = 'You win';
-      } if(bestValue < squares.length){
+      } if (bestValue < squares.length) {
         bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
         localStorage.setItem('bestValue', bestDisplay.innerHTML);
-      } if(localStorage.getItem('bestValue', bestDisplay.innerHTML) < score) {
+      } if (localStorage.getItem('bestValue', bestDisplay.innerHTML) < score)  {
         bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
         localStorage.setItem('bestValue', bestDisplay.innerHTML);
       }
     }
   }
- 
     // check loose
     function checkLoose() {
-      // let zeros = 0;
-      //     for (let i = 0; i < squares.length; i++) {
-      //     if (squares[i].innerHTML === '') {
-      //     zeros++;
-      //   }
-      // }
-      //     if (zeros === 0) {
-      // document.removeEventListener('keyup', control);
-      // resultDisplay.innerHTML = 'Game over';
-      //     }
-      //    }
-
-      
-      for (let i = 0; i < 15  ; i++){
-        for (let i = 0; i < 12; i++){
-          if(squares[i].innerHTML == 0){
-            return false;
-          }if(i !== 1 && squares[i].innerHTML === squares[i+1].innerHTML){
-            return false;            
-          }if(i !== 1 && squares[i].innerHTML === squares[i+width].innerHTML){
-            return false;            
+      let rowCheck;
+      let columnCheck; 
+      let zeros = 0;
+       if (zeros === 0) {
+        for (let i = 0; i < squares.length; i++) {
+          for (let i = 0; i < 15 ; i++) {
+           if (squares[i].innerHTML === squares[i+1].innerHTML) {
+              rowCheck = true;   
+           } 
           }
-        }     
-        document.removeEventListener('keyup', control);
-        resultDisplay.innerHTML = 'Game over';
-        return true;
-       }
-     } 
-    
+        }         
+          if (!rowCheck) {
+            for (let i = 0; i < 12; i++) {
+              if (squares[i].innerHTML === squares[i+width].innerHTML) {
+                columnCheck = true;
+              }
+            }  
+          }
+          if (!rowCheck && !columnCheck && !checkWin) {
+            document.removeEventListener('keyup', control);
+            resultDisplay.innerHTML = 'Game over';
+          }  
+         }
+       } 
+       
     // new game
     function clickButton() {    
       clearBord();
@@ -279,39 +254,39 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Clear gameboard
     function clearBord() {
-      for(let i = 0; i < squares.length; i++) {
+      for (let i = 0; i < squares.length; i++) {
         squares[i].innerHTML = '';
       }
     }
     
     // ColorChange
     function colorSwitch() {
-      for( let i = 0; i < squares.length; i++) {
+      for (let i = 0; i < squares.length; i++) {
         // console.log(squares[i]); 
         if (squares[i].innerHTML == 0) {
           squares[i].style.backgroundColor = "#bababaeb";
-        }if(squares[i].innerHTML == 2) {
+        }if (squares[i].innerHTML == 2) {
             squares[i].style.backgroundColor = "#f7ababeb";
         // console.log(squares[i].innerHTML);  
-        }if(squares[i].innerHTML == 4) {
+        }if (squares[i].innerHTML == 4) {
           squares[i].style.backgroundColor = "#f7abf0eb";
-        }if(squares[i].innerHTML == 8) {
+        }if (squares[i].innerHTML == 8) {
           squares[i].style.backgroundColor = "#d1abf7eb";
-        }if(squares[i].innerHTML == 16) {
+        }if (squares[i].innerHTML == 16) {
           squares[i].style.backgroundColor = "#abb2f7eb";
-        }if(squares[i].innerHTML == 32) {
+        }if (squares[i].innerHTML == 32) {
           squares[i].style.backgroundColor = "#9abe9f7eb";
-        }if(squares[i].innerHTML == 64) {
+        }if (squares[i].innerHTML == 64) {
           squares[i].style.backgroundColor = "#abf7e0eb";
-        }if(squares[i].innerHTML == 128) {
+        }if (squares[i].innerHTML == 128) {
           squares[i].style.backgroundColor = "#abf7bbeb";
-        }if(squares[i].innerHTML == 256) {
+        }if (squares[i].innerHTML == 256) {
           squares[i].style.backgroundColor = "#bff7abeb";
-        }if(squares[i].innerHTML == 512) {
+        }if (squares[i].innerHTML == 512) {
           squares[i].style.backgroundColor = "#daf7abeb";
-        }if(squares[i].innerHTML == 1024) {
+        }if (squares[i].innerHTML == 1024) {
           squares[i].style.backgroundColor = "#7f1f7abeb";
-        }if(squares[i].innerHTML == 2048) {
+        }if (squares[i].innerHTML == 2048) {
           squares[i].style.backgroundColor = "#fa6e32eb";
         }
       }
