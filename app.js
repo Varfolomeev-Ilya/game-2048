@@ -51,23 +51,20 @@ document.addEventListener('DOMContentLoaded', () => {
             colorChange();                  
      } 
 
-     function createRowsOnMove() {
-      for (let i = 0; i < width * width ; i++) {
-        if (i % 4 === 0) {
-
-        }
-      }
+     function createRowOnMove(i) {
+      let one = squares[i].innerHTML;
+      let two = squares[i+1].innerHTML;
+      let three = squares[i+2].innerHTML;
+      let four = squares[i+3].innerHTML;
+      let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];  
+      return row;
      } 
+
     //  move left and right
      function moveRight() {
        for (let i = 0; i < width * width ; i++) {
           if (i % 4 === 0) {
-            let one = squares[i].innerHTML;
-            let two = squares[i+1].innerHTML;
-            let three = squares[i+2].innerHTML;
-            let four = squares[i+3].innerHTML;
-            let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];  
-
+            let row = createRowOnMove(i);
             let filteredRow = row.filter(num => num) 
             let missing = 4 - filteredRow.length;
             let zeros = Array(missing).fill('');
@@ -84,12 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
      function moveLeft() {
       for (let i = 0; i < width * width ; i++) {
         if (i % 4 === 0) {
-           let one = squares[i].innerHTML;
-           let two = squares[i+1].innerHTML;
-           let three = squares[i+2].innerHTML;
-           let four = squares[i+3].innerHTML;
-           let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
-
+           let row = createRowOnMove(i);
            let filteredRow = row.filter(num => num) 
            let missing = 4 - filteredRow.length;
            let zeros = Array(missing).fill('');;
@@ -103,15 +95,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-      // move down and up
+     function createColumnOnMove(i) {
+      let one = squares[i].innerHTML;
+      let two = squares[i + width].innerHTML;
+      let three = squares[i + (width * 2)].innerHTML;
+      let four = squares[i + (width * 3)].innerHTML;
+      let column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
+      return column;
+     }
+      
+    // move down and up
      function moveDown() {
       for (let i = 0; i < 4; i++) {
-        let one = squares[i].innerHTML;
-        let two = squares[i + width].innerHTML;
-        let three = squares[i + (width * 2)].innerHTML;
-        let four = squares[i + (width * 3)].innerHTML;
-        let column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
-
+        let column = createColumnOnMove(i);
         let filteredColumn = column.filter(num => num);
         let missing = 4 - filteredColumn.length;
         let zeros = Array(missing).fill('');
@@ -126,12 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
      function moveUp() {
       for (let i = 0; i < 4; i++) {
-        let one = squares[i].innerHTML;
-        let two = squares[i+ width].innerHTML;
-        let three = squares[i + (width * 2)].innerHTML;
-        let four = squares[i + (width * 3)].innerHTML;
-        let column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
-
+        let column = createColumnOnMove(i);
         let filteredColumn = column.filter(num => num);
         let missing = 4 - filteredColumn.length;
         let zeros = Array(missing).fill('');
