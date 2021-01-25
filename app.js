@@ -3,16 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreDisplay = document.getElementById('score');
   const resultDisplay = document.getElementById('result');
   const bestDisplay = document.getElementById('best');
-  const width = 4;
-  let squares = [];
-  let score = 0;
   const scoreStorage = localStorage.getItem('bestValue');
   let bestValue = !scoreStorage ? '0' : scoreStorage;
+
+  const width = 4;
+  let squares = [];
+  let score = 0;  
   bestDisplay.innerHTML = bestValue;
-  restart.onclick = newGameButton;
+  restart.onclick = pressNewGameButton;
   document.addEventListener('keyup', control)
+
   const colors = {
-    "0": "#bababaeb",
+    "": "#bababaeb",
     "2": "#f7ababeb",
     "4": "#f7abf0eb",
     "8": "#d1abf7eb",
@@ -28,44 +30,49 @@ document.addEventListener('DOMContentLoaded', () => {
   
     //playing board
     function createBoard() {
-      for (let i=0 ; i < width*width; i++) {
+      for (let i = 0 ; i < width * width; i++) {
         square = document.createElement('div');
         square.innerHTML = '';
         gridDisplay.appendChild(square);
         squares.push(square);       
       } 
-      generate();
-      generate();
+      generateRandomNumbers();
+      generateRandomNumbers();
     }
      createBoard();
  
     //random numbers on board
-     function generate() {
+     function generateRandomNumbers() {
        let randomNumbers = Math.floor(Math.random() * squares.length)
        if (squares[randomNumbers].innerHTML == 0) {
-          squares[randomNumbers].innerHTML = 2;    
-       } else generate(); 
-          checkLoose(); 
-          colorChange();                  
+         squares[randomNumbers].innerHTML = 2;    
+          } else generateRandomNumbers(); 
+            checkLoose(); 
+            colorChange();                  
      } 
 
-    //  arrow left and right
-     function arrowRight() {
-       for (let i=0; i < width*width ; i++) {
-         if (i % 4 === 0) {
+     function createRowsOnMove() {
+      for (let i = 0; i < width * width ; i++) {
+        if (i % 4 === 0) {
+
+        }
+      }
+     } 
+    //  move left and right
+     function moveRight() {
+       for (let i = 0; i < width * width ; i++) {
+          if (i % 4 === 0) {
             let one = squares[i].innerHTML;
             let two = squares[i+1].innerHTML;
             let three = squares[i+2].innerHTML;
             let four = squares[i+3].innerHTML;
-            let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];         
-            // console.log(row);
+            let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];  
+
             let filteredRow = row.filter(num => num) 
-            // console.log(filteredRow);
             let missing = 4 - filteredRow.length;
             let zeros = Array(missing).fill('');
-            // console.log(zeros.length); 
             let newRow = zeros.concat(filteredRow);
-            // console.log(newRow);
+
             squares[i].innerHTML = newRow[0];
             squares[i+1].innerHTML = newRow[1];
             squares[i+2].innerHTML = newRow[2];
@@ -74,74 +81,74 @@ document.addEventListener('DOMContentLoaded', () => {
        } 
       }   
       
-     function arrowLeft() {
-      for (let i=0; i < width*width ; i++) {
+     function moveLeft() {
+      for (let i = 0; i < width * width ; i++) {
         if (i % 4 === 0) {
-            let one = squares[i].innerHTML;
-            let two = squares[i+1].innerHTML;
-            let three = squares[i+2].innerHTML;
-            let four = squares[i+3].innerHTML;
-            let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
-            // console.log(row);
-            let filteredRow = row.filter(num => num) 
-            // console.log(filteredRow);
-            let missing = 4 - filteredRow.length;
-            let zeros = Array(missing).fill('');
-            // console.log(zeros.length); 
-            let newRow = filteredRow.concat(zeros);
-            // console.log(newRow);
-            squares[i].innerHTML = newRow[0];
-            squares[i+1].innerHTML = newRow[1];
-            squares[i+2].innerHTML = newRow[2];
-            squares[i+3].innerHTML = newRow[3]; 
+           let one = squares[i].innerHTML;
+           let two = squares[i+1].innerHTML;
+           let three = squares[i+2].innerHTML;
+           let four = squares[i+3].innerHTML;
+           let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
+
+           let filteredRow = row.filter(num => num) 
+           let missing = 4 - filteredRow.length;
+           let zeros = Array(missing).fill('');;
+           let newRow = filteredRow.concat(zeros);
+
+           squares[i].innerHTML = newRow[0];
+           squares[i+1].innerHTML = newRow[1];
+           squares[i+2].innerHTML = newRow[2];
+           squares[i+3].innerHTML = newRow[3]; 
         }
       }
     }
 
-      // swipe down
-      function arrowDown() {
-        for (let i = 0; i < 4; i++) {
+      // move down and up
+     function moveDown() {
+      for (let i = 0; i < 4; i++) {
         let one = squares[i].innerHTML;
-        let two = squares[i+width].innerHTML;
-        let three = squares[i+(width*2)].innerHTML;
-        let four = squares[i+(width*3)].innerHTML;
+        let two = squares[i + width].innerHTML;
+        let three = squares[i + (width * 2)].innerHTML;
+        let four = squares[i + (width * 3)].innerHTML;
         let column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
+
         let filteredColumn = column.filter(num => num);
         let missing = 4 - filteredColumn.length;
         let zeros = Array(missing).fill('');
-        // console.log(zeros.length)
         let newColumn = zeros.concat(filteredColumn);
+
         squares[i].innerHTML = newColumn[0];
-        squares[i+width].innerHTML = newColumn[1];
-        squares[i+width*2].innerHTML = newColumn[2];
-        squares[i+width*3].innerHTML = newColumn[3];
+        squares[i + width].innerHTML = newColumn[1];
+        squares[i + width * 2].innerHTML = newColumn[2];
+        squares[i + width * 3].innerHTML = newColumn[3];
       }
     }
 
-      // swipe UP
-      function arrowUp() {
-        for (let i = 0; i < 4; i++) {
+     function moveUp() {
+      for (let i = 0; i < 4; i++) {
         let one = squares[i].innerHTML;
-        let two = squares[i+width].innerHTML;
-        let three = squares[i+(width*2)].innerHTML;
-        let four = squares[i+(width*3)].innerHTML;
+        let two = squares[i+ width].innerHTML;
+        let three = squares[i + (width * 2)].innerHTML;
+        let four = squares[i + (width * 3)].innerHTML;
         let column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
+
         let filteredColumn = column.filter(num => num);
         let missing = 4 - filteredColumn.length;
         let zeros = Array(missing).fill('');
         let newColumn = filteredColumn.concat(zeros);
+
         squares[i].innerHTML = newColumn[0];
-        squares[i+width].innerHTML = newColumn[1];
-        squares[i+width*2].innerHTML = newColumn[2];
-        squares[i+width*3].innerHTML = newColumn[3];
+        squares[i + width].innerHTML = newColumn[1];
+        squares[i + width * 2].innerHTML = newColumn[2];
+        squares[i + width * 3].innerHTML = newColumn[3];
       } 
     }
 
       // sum Row
      function sumRow() {
-          for (let i = 0; i < 15  ; i++) {
+        for (let i = 0; i < 15  ; i++) {
           let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
-          if (squares[i].innerHTML === squares[i+1].innerHTML) {
+            if (squares[i].innerHTML === squares[i+1].innerHTML) {
               squares[i].innerHTML = combineTotal;
               squares[i+1].innerHTML = 0;
               const value = !combineTotal ? 0 : combineTotal;
@@ -154,14 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // sum Column
       function sumColumn() {
-        for (let i = 0; i < 12; i++) {
-        let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+width].innerHTML);
-        if (squares[i].innerHTML === squares[i+width].innerHTML) {
-           squares[i].innerHTML = combineTotal;
-           squares[i+width].innerHTML = 0;
-           const value = !combineTotal ? 0 : combineTotal;
-           score += value;
-           scoreDisplay.innerHTML = score;  
+       for (let i = 0; i < 12; i++) {
+         let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i + width].innerHTML);
+           if (squares[i].innerHTML === squares[i + width].innerHTML) {
+             squares[i].innerHTML = combineTotal;
+             squares[i + width].innerHTML = 0;
+             const value = !combineTotal ? 0 : combineTotal;
+             score += value;
+             scoreDisplay.innerHTML = score;  
         }
       }
       checkWin();
@@ -169,65 +176,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
      //keycodes
     function control(e) {
-      if (e.keyCode === 39) {
-        swipeRight();
-      } else if (e.keyCode === 37) {
-        swipeLeft();
-      } else if (e.keyCode === 40) {
-        swipeDown();
-      } else if (e.keyCode === 38) {
-        swipeUp();
-      }
-    }    
+      switch (e.keyCode) {
+        case 39:
+        onmoveRightButtonPress();
+          break;
+        case 37:
+        onmoveLeftButtonPress();
+          break;
+       case 40: 
+        onmoveDownButtonPress();
+          break;
+       case 38:
+        onmoveUpButtonPress();
+          break; 
+      }  
+    }  
 
-    function swipeRight() {
-      arrowRight();
+    function onmoveRightButtonPress() {
+      moveRight();
       sumRow();
-      arrowRight();
-      generate();
-    };
-
-    function swipeLeft() {
-      arrowLeft();
-      sumRow();
-      arrowLeft();
-      generate();
-    };
-
-    function swipeDown() {
-      arrowDown();
-      sumColumn();
-      arrowDown();
-      generate();
+      moveRight();
+      generateRandomNumbers();
     }
 
-    function swipeUp() {
-      arrowUp();
+    function onmoveLeftButtonPress() {
+      moveLeft();
+      sumRow();
+      moveLeft();
+      generateRandomNumbers();
+    }
+
+    function onmoveDownButtonPress() {
+      moveDown();
       sumColumn();
-      arrowUp();
-      generate();
+      moveDown();
+      generateRandomNumbers();
+    }
+
+    function onmoveUpButtonPress() {
+      moveUp();
+      sumColumn();
+      moveUp();
+      generateRandomNumbers();
     }
 
   // check win
   function checkWin() {
-    for (let i=0; i < squares.length; i++) {
+    for (let i = 0; i < squares.length; i++) {
       if (squares[i].innerHTML === '2048') {
           resultDisplay.innerHTML = 'You win';
-      } if (bestValue < squares.length) {
-        bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
-        localStorage.setItem('bestValue', bestDisplay.innerHTML);
-      } if (localStorage.getItem('bestValue', bestDisplay.innerHTML) < score)  {
-        bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
-        localStorage.setItem('bestValue', bestDisplay.innerHTML);
+        } if (bestValue < squares.length) {
+          bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
+          localStorage.setItem('bestValue', bestDisplay.innerHTML);
+          } if (scoreStorage < score)  {
+            bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
+            localStorage.setItem('bestValue', bestDisplay.innerHTML);
       }
     }
   }
     // check loose
     function checkLoose() {
-      let result = [];
-      for (let i =0; i < squares.length; i++) {
-        if (squares[i].innerHTML === '') {
-          result.push('');
+     let result = [];
+       for (let i = 0; i < squares.length; i++) {
+         if (squares[i].innerHTML === '') {
+            result.push('');
         }
       }
       let rowCheck;
@@ -236,30 +248,29 @@ document.addEventListener('DOMContentLoaded', () => {
       if (zeros === 0) {
         for (let i = 0; i < squares.length; i++) {
           for (let i = 0; i < 15 ; i++) {
-           if (squares[i].innerHTML === squares[i+1].innerHTML) {
-              rowCheck = true;  
+            if (squares[i].innerHTML === squares[i+1].innerHTML) {
+               rowCheck = true;  
            } 
           }
         }         
           if (!rowCheck) {
             for (let i = 0; i < 12; i++) {
-              if (squares[i].innerHTML === squares[i+width].innerHTML) {
-                columnCheck = true;
+              if (squares[i].innerHTML === squares[i + width].innerHTML) {
+                 columnCheck = true;
               }
             }  
           }
           if (!rowCheck && !columnCheck && result.length === 0) {
-            resultDisplay.innerHTML = 'Game over';
-            document.removeEventListener('keyup', control);  
+             resultDisplay.innerHTML = 'Game over';
+             document.removeEventListener('keyup', control);  
           }  
          }
        } 
        
     // button New game
-    function newGameButton() {    
+    function pressNewGameButton() {    
       clearPlayingField();
-      generate();
-      generate();
+      generateRandomNumbers();
       clearResultScore();
     }
 
@@ -280,9 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ColorChange
     function colorChange() {
       for (let i = 0; i < squares.length; i++) { 
-        if (squares[i].innerHTML == 0) {
-          squares[i].style.backgroundColor = "#bababaeb";
-        }
         squares[i].style.backgroundColor = colors[squares[i].innerHTML];
       }
     } 
