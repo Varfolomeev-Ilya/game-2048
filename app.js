@@ -36,22 +36,49 @@ document.addEventListener('DOMContentLoaded', () => {
         gridDisplay.appendChild(square);
         squares.push(square);       
       } 
-      generateRandomNumbers();
-      generateRandomNumbers();
+      getRandomNumbers();
     }
      createBoard();
  
     //random numbers on board
-     function generateRandomNumbers() {
-       let randomNumbers = Math.floor(Math.random() * squares.length)
+     function getRandomNumbers() {
+       let randomNumbers = Math.floor(Math.random() * squares.length);
        if (squares[randomNumbers].innerHTML == 0) {
-         squares[randomNumbers].innerHTML = 2;    
-          } else generateRandomNumbers(); 
+           squares[randomNumbers].innerHTML = 2;    
+          } else 
             checkLoose(); 
             colorChange();                  
      } 
+     getRandomNumbers();
 
-     function createRowOnMove(i) {
+    //  move left and right
+    function goRight() {
+      for (let i = 0; i < width * width ; i++) {
+         if (i % 4 === 0) {
+           let row = sumRow(i);
+           let filteredRow = row.filter(num => num) 
+           let missing = 4 - filteredRow.length;
+           let zeros = Array(missing).fill('');
+           let newRow = zeros.concat(filteredRow);
+           sumSquaresRow(newRow, squares, i);     
+       }   
+      } 
+     }   
+     
+    function goLeft() {
+     for (let i = 0; i < width * width ; i++) {
+       if (i % 4 === 0) {
+          let row = sumRow(i);
+          let filteredRow = row.filter(num => num) 
+          let missing = 4 - filteredRow.length;
+          let zeros = Array(missing).fill('');;
+          let newRow = filteredRow.concat(zeros);
+          sumSquaresRow(newRow, squares, i);
+       }
+     }
+   }
+
+    function sumRow(i) {
       let one = squares[i].innerHTML;
       let two = squares[i+1].innerHTML;
       let three = squares[i+2].innerHTML;
@@ -60,86 +87,18 @@ document.addEventListener('DOMContentLoaded', () => {
       return row;
      } 
 
-    //  move left and right
-     function moveRight() {
-       for (let i = 0; i < width * width ; i++) {
-          if (i % 4 === 0) {
-            let row = createRowOnMove(i);
-            let filteredRow = row.filter(num => num) 
-            let missing = 4 - filteredRow.length;
-            let zeros = Array(missing).fill('');
-            let newRow = zeros.concat(filteredRow);
-
-            squares[i].innerHTML = newRow[0];
-            squares[i+1].innerHTML = newRow[1];
-            squares[i+2].innerHTML = newRow[2];
-            squares[i+3].innerHTML = newRow[3]; 
-        }   
-       } 
-      }   
-      
-     function moveLeft() {
-      for (let i = 0; i < width * width ; i++) {
-        if (i % 4 === 0) {
-           let row = createRowOnMove(i);
-           let filteredRow = row.filter(num => num) 
-           let missing = 4 - filteredRow.length;
-           let zeros = Array(missing).fill('');;
-           let newRow = filteredRow.concat(zeros);
-
-           squares[i].innerHTML = newRow[0];
-           squares[i+1].innerHTML = newRow[1];
-           squares[i+2].innerHTML = newRow[2];
-           squares[i+3].innerHTML = newRow[3]; 
-        }
-      }
-    }
-
-     function createColumnOnMove(i) {
-      let one = squares[i].innerHTML;
-      let two = squares[i + width].innerHTML;
-      let three = squares[i + (width * 2)].innerHTML;
-      let four = squares[i + (width * 3)].innerHTML;
-      let column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
-      return column;
+     function sumSquaresRow(newRow, squares, i) { 
+      squares[i].innerHTML = newRow[0];
+      squares[i+1].innerHTML = newRow[1];
+      squares[i+2].innerHTML = newRow[2];
+      squares[i+3].innerHTML = newRow[3];  
      }
-      
-    // move down and up
-     function moveDown() {
-      for (let i = 0; i < 4; i++) {
-        let column = createColumnOnMove(i);
-        let filteredColumn = column.filter(num => num);
-        let missing = 4 - filteredColumn.length;
-        let zeros = Array(missing).fill('');
-        let newColumn = zeros.concat(filteredColumn);
-
-        squares[i].innerHTML = newColumn[0];
-        squares[i + width].innerHTML = newColumn[1];
-        squares[i + width * 2].innerHTML = newColumn[2];
-        squares[i + width * 3].innerHTML = newColumn[3];
-      }
-    }
-
-     function moveUp() {
-      for (let i = 0; i < 4; i++) {
-        let column = createColumnOnMove(i);
-        let filteredColumn = column.filter(num => num);
-        let missing = 4 - filteredColumn.length;
-        let zeros = Array(missing).fill('');
-        let newColumn = filteredColumn.concat(zeros);
-
-        squares[i].innerHTML = newColumn[0];
-        squares[i + width].innerHTML = newColumn[1];
-        squares[i + width * 2].innerHTML = newColumn[2];
-        squares[i + width * 3].innerHTML = newColumn[3];
-      } 
-    }
-
-      // sum Row
-     function sumRow() {
-        for (let i = 0; i < 15  ; i++) {
-          let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
-            if (squares[i].innerHTML === squares[i+1].innerHTML) {
+ 
+     // sum Rows
+    function sumRowOnMove() {
+      for (let i = 0; i < 15  ; i++) {
+        let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
+          if (squares[i].innerHTML === squares[i+1].innerHTML) {
               squares[i].innerHTML = combineTotal;
               squares[i+1].innerHTML = 0;
               const value = !combineTotal ? 0 : combineTotal;
@@ -150,8 +109,47 @@ document.addEventListener('DOMContentLoaded', () => {
         checkWin()
      }
 
+    // move down and up
+     function goDown() {
+      for (let i = 0; i < 4; i++) {
+        let column = sumColumn(i);
+        let filteredColumn = column.filter(num => num);
+        let missing = 4 - filteredColumn.length;
+        let zeros = Array(missing).fill('');
+        let newColumn = zeros.concat(filteredColumn);
+        sumSquaresColumn(newColumn, squares, i);
+      }
+    }
+
+     function goUp() {
+      for (let i = 0; i < 4; i++) {
+        let column = sumColumn(i);
+        let filteredColumn = column.filter(num => num);
+        let missing = 4 - filteredColumn.length;
+        let zeros = Array(missing).fill('');
+        let newColumn = filteredColumn.concat(zeros);
+        sumSquaresColumn(newColumn, squares, i);
+      } 
+    }
+
+    function sumColumn(i) {
+      let one = squares[i].innerHTML;
+      let two = squares[i + width].innerHTML;
+      let three = squares[i + (width * 2)].innerHTML;
+      let four = squares[i + (width * 3)].innerHTML;
+      let column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
+      return column;
+     }
+
+     function sumSquaresColumn(newColumn, squares, i) {
+      squares[i].innerHTML = newColumn[0];
+      squares[i + width].innerHTML = newColumn[1];
+      squares[i + width * 2].innerHTML = newColumn[2];
+      squares[i + width * 3].innerHTML = newColumn[3];
+     }
+
       // sum Column
-      function sumColumn() {
+      function sumColumnOnMove() {
        for (let i = 0; i < 12; i++) {
          let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i + width].innerHTML);
            if (squares[i].innerHTML === squares[i + width].innerHTML) {
@@ -169,46 +167,42 @@ document.addEventListener('DOMContentLoaded', () => {
     function control(e) {
       switch (e.keyCode) {
         case 39:
-        onmoveRightButtonPress();
+        onArrowRightButtonPress();
           break;
         case 37:
-        onmoveLeftButtonPress();
+        onArrowLeftButtonPress();
           break;
-       case 40: 
-        onmoveDownButtonPress();
+        case 40: 
+        onArrowDownButtonPress();
           break;
-       case 38:
-        onmoveUpButtonPress();
+        case 38:
+        onArrowUpButtonPress();
           break; 
       }  
     }  
 
-    function onmoveRightButtonPress() {
-      moveRight();
-      sumRow();
-      moveRight();
-      generateRandomNumbers();
+    function onArrowRightButtonPress() {
+      sumRowOnMove();
+      goRight(squares);
+      getRandomNumbers();
     }
 
-    function onmoveLeftButtonPress() {
-      moveLeft();
-      sumRow();
-      moveLeft();
-      generateRandomNumbers();
+    function onArrowLeftButtonPress() {
+      sumRowOnMove();
+      goLeft(squares);
+      getRandomNumbers();
     }
 
-    function onmoveDownButtonPress() {
-      moveDown();
-      sumColumn();
-      moveDown();
-      generateRandomNumbers();
+    function onArrowDownButtonPress() {
+      sumColumnOnMove();
+      goDown(squares);
+      getRandomNumbers();
     }
 
-    function onmoveUpButtonPress() {
-      moveUp();
-      sumColumn();
-      moveUp();
-      generateRandomNumbers();
+    function onArrowUpButtonPress() {
+      sumColumnOnMove();
+      goUp(squares);
+      getRandomNumbers();
     }
 
   // check win
@@ -260,20 +254,20 @@ document.addEventListener('DOMContentLoaded', () => {
        
     // button New game
     function pressNewGameButton() {    
-      clearPlayingField();
-      generateRandomNumbers();
-      clearResultScore();
+      clearBoard();
+      getRandomNumbers();
+      clearResult();
     }
 
     // clear score,scoredisplay,resultdisplay
-    function clearResultScore() {
+    function clearResult() {
       scoreDisplay.innerHTML = 0;
       score = 0;
       resultDisplay.innerHTML = '';
     }
   
-    // Clear clearPlayingField
-    function clearPlayingField() {
+    // Clear clearBoard
+    function clearBoard() {
       for (let i = 0; i < squares.length; i++) {
         squares[i].innerHTML = '';
       }
