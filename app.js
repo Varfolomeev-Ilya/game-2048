@@ -25,185 +25,196 @@ document.addEventListener('DOMContentLoaded', () => {
     "256": "#bff7abeb",
     "512": "#daf7abeb",
     "1024": "#7f1f7abeb",
-    "2048": "#fa6e32eb",
+    "2048": "#fa6e32eb"
   }
   
-    //playing board
-    function createBoard() {
-      for (let i = 0 ; i < width * width; i++) {
-        square = document.createElement('div');
-        square.innerHTML = '';
-        gridDisplay.appendChild(square);
-        squares.push(square);       
-      } 
+  //playing board
+  function createBoard() {
+    for (let i = 0 ; i < width * width; i++) {
+      square = document.createElement('div');
+      square.innerHTML = '';
+      gridDisplay.appendChild(square);
+      squares.push(square);       
+    } 
       getRandomNumbers();
-    }
+  }
      createBoard();
  
-    //random numbers on board
-     function getRandomNumbers() {
-       let randomNumbers = Math.floor(Math.random() * squares.length);
-       if (squares[randomNumbers].innerHTML == 0) {
-           squares[randomNumbers].innerHTML = 2;    
-          } else 
-            checkLoose(); 
-            colorChange();                  
-     } 
+  //random numbers on board
+  function getRandomNumbers() {
+    const randomNumbers = Math.floor(Math.random() * squares.length);
+      if (squares[randomNumbers].innerHTML == 0) {
+         squares[randomNumbers].innerHTML = 2;    
+      } else 
+          checkLoose(); 
+          colorChange();                  
+  } 
      getRandomNumbers();
 
-    //  move left and right
-    function goRight() {
-      for (let i = 0; i < width * width ; i++) {
-         if (i % 4 === 0) {
-           let row = sumRow(i);
-           let filteredRow = row.filter(num => num) 
-           let missing = 4 - filteredRow.length;
-           let zeros = Array(missing).fill('');
-           let newRow = zeros.concat(filteredRow);
-           sumSquaresRow(newRow, squares, i);     
-       }   
-      } 
-     }   
+  //  move left and right
+  function goRight() {
+    for (let i = 0; i < width * width ; i++) {
+      if (i % 4 === 0) {
+        const valtransformateRow = transformateRow(row = sumRow(i));
+        const newRow = valtransformateRow.zeros.concat(valtransformateRow.filteredRow);
+        sumSquaresRow(newRow, squares, i);     
+      }   
+    } 
+  }   
      
-    function goLeft() {
-     for (let i = 0; i < width * width ; i++) {
-       if (i % 4 === 0) {
-          let row = sumRow(i);
-          let filteredRow = row.filter(num => num) 
-          let missing = 4 - filteredRow.length;
-          let zeros = Array(missing).fill('');;
-          let newRow = filteredRow.concat(zeros);
-          sumSquaresRow(newRow, squares, i);
-       }
-     }
-   }
-
-    function sumRow(i) {
-      let one = squares[i].innerHTML;
-      let two = squares[i+1].innerHTML;
-      let three = squares[i+2].innerHTML;
-      let four = squares[i+3].innerHTML;
-      let row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];  
-      return row;
-     } 
-
-     function sumSquaresRow(newRow, squares, i) { 
-      squares[i].innerHTML = newRow[0];
-      squares[i+1].innerHTML = newRow[1];
-      squares[i+2].innerHTML = newRow[2];
-      squares[i+3].innerHTML = newRow[3];  
-     }
- 
-     // sum Rows
-    function sumRowOnMove() {
-      for (let i = 0; i < 15  ; i++) {
-        let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
-          if (squares[i].innerHTML === squares[i+1].innerHTML) {
-              squares[i].innerHTML = combineTotal;
-              squares[i+1].innerHTML = 0;
-              const value = !combineTotal ? 0 : combineTotal;
-              score += value;
-              scoreDisplay.innerHTML = score;
-          }
-       }  
-        checkWin()
-     }
-
-    // move down and up
-     function goDown() {
-      for (let i = 0; i < 4; i++) {
-        let column = sumColumn(i);
-        let filteredColumn = column.filter(num => num);
-        let missing = 4 - filteredColumn.length;
-        let zeros = Array(missing).fill('');
-        let newColumn = zeros.concat(filteredColumn);
-        sumSquaresColumn(newColumn, squares, i);
+  function goLeft() {
+    for (let i = 0; i < width * width ; i++) {
+      if (i % 4 === 0) {
+        const valtransformateRow = transformateRow(row = sumRow(i));
+        const newRow = valtransformateRow.filteredRow.concat(valtransformateRow.zeros);
+        sumSquaresRow(newRow, squares, i);
+        
       }
     }
+  }
 
-     function goUp() {
-      for (let i = 0; i < 4; i++) {
-        let column = sumColumn(i);
-        let filteredColumn = column.filter(num => num);
-        let missing = 4 - filteredColumn.length;
-        let zeros = Array(missing).fill('');
-        let newColumn = filteredColumn.concat(zeros);
-        sumSquaresColumn(newColumn, squares, i);
-      } 
-    }
+  function sumRow(i) {
+    const one = squares[i].innerHTML;
+    const two = squares[i+1].innerHTML;
+    const three = squares[i+2].innerHTML;
+    const four = squares[i+3].innerHTML;
+    const row = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];  
+    return row;
+  } 
 
-    function sumColumn(i) {
-      let one = squares[i].innerHTML;
-      let two = squares[i + width].innerHTML;
-      let three = squares[i + (width * 2)].innerHTML;
-      let four = squares[i + (width * 3)].innerHTML;
-      let column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
-      return column;
-     }
-
-     function sumSquaresColumn(newColumn, squares, i) {
-      squares[i].innerHTML = newColumn[0];
-      squares[i + width].innerHTML = newColumn[1];
-      squares[i + width * 2].innerHTML = newColumn[2];
-      squares[i + width * 3].innerHTML = newColumn[3];
-     }
-
-      // sum Column
-      function sumColumnOnMove() {
-       for (let i = 0; i < 12; i++) {
-         let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i + width].innerHTML);
-           if (squares[i].innerHTML === squares[i + width].innerHTML) {
-             squares[i].innerHTML = combineTotal;
-             squares[i + width].innerHTML = 0;
-             const value = !combineTotal ? 0 : combineTotal;
-             score += value;
-             scoreDisplay.innerHTML = score;  
-        }
-      }
-      checkWin();
-    }
-
-     //keycodes
-    function control(e) {
-      switch (e.keyCode) {
-        case 39:
-        onArrowRightButtonPress();
-          break;
-        case 37:
-        onArrowLeftButtonPress();
-          break;
-        case 40: 
-        onArrowDownButtonPress();
-          break;
-        case 38:
-        onArrowUpButtonPress();
-          break; 
-      }  
+  function sumSquaresRow(newRow, squares, i) { 
+    for (let j = 0; j < width; j++) {
+      squares[i+j].innerHTML = newRow[j];
     }  
+  }
 
-    function onArrowRightButtonPress() {
-      sumRowOnMove();
-      goRight(squares);
-      getRandomNumbers();
+  function transformateRow(row) {
+    const filteredRow = row.filter(num => num) 
+    const missing = 4 - filteredRow.length;
+    const zeros = Array(missing).fill('');
+    return {zeros,
+            filteredRow
     }
+  }
+  
+  //scorecounter for rows and columns
+  function scoreCounter(combineTotal) {
+    const value = !combineTotal ? 0 : combineTotal;
+    score += value;
+    scoreDisplay.innerHTML = score;
+    return score;
+  } 
 
-    function onArrowLeftButtonPress() {
-      sumRowOnMove();
-      goLeft(squares);
-      getRandomNumbers();
-    }
+  // sum Rows
+  function sumRowOnMove() {
+    for (let i = 0; i < 15 ; i++) {
+      const combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
+        if (squares[i].innerHTML === squares[i+1].innerHTML) {
+            squares[i].innerHTML = combineTotal;
+            squares[i+1].innerHTML = 0;
+            // const value = !combineTotal ? 0 : combineTotal;
+            // score += value;
+            // scoreDisplay.innerHTML = score;
+            scoreCounter(combineTotal);
+      }
+    }  
+        checkWin();
+  }
 
-    function onArrowDownButtonPress() {
-      sumColumnOnMove();
-      goDown(squares);
-      getRandomNumbers();
+  // move down and up
+  function goDown() {
+    for (let i = 0; i < 4; i++) {
+      const ValTransformateColumn = transformateColumn(column = sumColumn(i));
+      const newColumn = ValTransformateColumn.zeros.concat(ValTransformateColumn.filteredColumn);
+      sumSquaresColumn(newColumn, squares, i);
     }
+  }
 
-    function onArrowUpButtonPress() {
-      sumColumnOnMove();
-      goUp(squares);
-      getRandomNumbers();
+  function goUp() {
+    for (let i = 0; i < 4; i++) {
+      const ValTransformateColumn = transformateColumn(column = sumColumn(i));
+      const newColumn = ValTransformateColumn.filteredColumn.concat(ValTransformateColumn.zeros);
+      sumSquaresColumn(newColumn, squares, i);
+    } 
+  }
+
+  function sumColumn(i) {
+    const one = squares[i].innerHTML;
+    const two = squares[i + width].innerHTML;
+    const three = squares[i + (width * 2)].innerHTML;
+    const four = squares[i + (width * 3)].innerHTML;
+    const column = [parseInt(one), parseInt(two), parseInt(three), parseInt(four)];
+    return column;
+  }
+
+  function sumSquaresColumn(newColumn, squares, i) {
+    for (let j = 0; j < width ; j++) {
+      squares[i + width * j].innerHTML = newColumn[j];
     }
+  }
+
+  function transformateColumn() {
+    const filteredColumn = column.filter(num => num);
+    const missing = 4 - filteredColumn.length;
+    const zeros = Array(missing).fill('');
+    return {zeros,
+            filteredColumn
+    }
+  }
+  // sum Column
+  function sumColumnOnMove() {
+    for (let i = 0; i < 12; i++) {
+      const combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i + width].innerHTML);
+        if (squares[i].innerHTML === squares[i + width].innerHTML) {
+           squares[i].innerHTML = combineTotal;
+           squares[i + width].innerHTML = 0;
+           scoreCounter(combineTotal); 
+        }
+    }
+      checkWin();
+  }
+
+  //keycodes
+  function control(e) {
+    switch (e.keyCode) {
+      case 39:
+      onArrowRightButtonPress();
+        break;
+      case 37:
+      onArrowLeftButtonPress();
+        break;
+      case 40: 
+      onArrowDownButtonPress();
+        break;
+      case 38:
+      onArrowUpButtonPress();
+        break; 
+    }  
+  }  
+
+  function onArrowRightButtonPress() {
+    sumRowOnMove();
+    goRight(squares);
+    getRandomNumbers();
+  }
+
+  function onArrowLeftButtonPress() {
+    sumRowOnMove();
+    goLeft(squares);
+    getRandomNumbers();
+  }
+
+  function onArrowDownButtonPress() {
+    sumColumnOnMove();
+    goDown(squares);
+    getRandomNumbers();
+  }
+
+  function onArrowUpButtonPress() {
+    sumColumnOnMove();
+    goUp(squares);
+    getRandomNumbers();
+  }
 
   // check win
   function checkWin() {
@@ -216,14 +227,14 @@ document.addEventListener('DOMContentLoaded', () => {
           } if (scoreStorage < score)  {
             bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
             localStorage.setItem('bestValue', bestDisplay.innerHTML);
-      }
+          }
     }
   }
-    // check loose
-    function checkLoose() {
-     let result = [];
-       for (let i = 0; i < squares.length; i++) {
-         if (squares[i].innerHTML === '') {
+  // check loose
+  function checkLoose() {
+    let result = [];
+      for (let i = 0; i < squares.length; i++) {
+        if (squares[i].innerHTML === '') {
             result.push('');
         }
       }
@@ -249,36 +260,38 @@ document.addEventListener('DOMContentLoaded', () => {
              resultDisplay.innerHTML = 'Game over';
              document.removeEventListener('keyup', control);  
           }  
-         }
-       } 
-       
-    // button New game
-    function pressNewGameButton() {    
-      clearBoard();
-      getRandomNumbers();
-      clearResult();
-    }
-
-    // clear score,scoredisplay,resultdisplay
-    function clearResult() {
-      scoreDisplay.innerHTML = 0;
-      score = 0;
-      resultDisplay.innerHTML = '';
-    }
-  
-    // Clear clearBoard
-    function clearBoard() {
-      for (let i = 0; i < squares.length; i++) {
-        squares[i].innerHTML = '';
-      }
-    }
-    
-    // ColorChange
-    function colorChange() {
-      for (let i = 0; i < squares.length; i++) { 
-        squares[i].style.backgroundColor = colors[squares[i].innerHTML];
       }
     } 
+       
+  // button New game
+  function pressNewGameButton() {   
+    clearBoard();
+    getRandomNumbers();
+    getRandomNumbers();
+    clearResult();
+  }
+
+  // clear score,scoredisplay,resultdisplay
+  function clearResult() {
+    resultDisplay.innerHTML = '';
+    scoreDisplay.innerHTML = 0;
+    score = 0;    
+  }
+  
+  // Clear clearBoard
+  function clearBoard() {
+    for (let i = 0; i < squares.length; i++) {
+      squares[i].innerHTML = '';
+    }
+        
+  }
+    
+  // ColorChange
+  function colorChange() {
+    for (let i = 0; i < squares.length; i++) { 
+      squares[i].style.backgroundColor = colors[squares[i].innerHTML];
+    }
+  } 
 })
 
 
