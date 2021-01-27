@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } 
 
   function sumSquaresRow(newRow, squares, i) { 
-    for (let j = 0; j < width; j++) {
+    for (let j = 0; j < 4; j++) {
       squares[i+j].innerHTML = newRow[j];
     }  
   }
@@ -129,16 +129,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function sumColumn(i) {
     let column = [];
-    for (let j = 0; j < width; j++) {    
-      column.push(parseInt(squares[i + width * j].innerHTML));  
+    for (let  j = 0; j < 4; j++) {    
+      column.push(parseInt(squares[i + (width * j)].innerHTML));  
       
     }   
     return column;  
   }
 
   function sumSquaresColumn(newColumn, squares, i) {
-    for (let j = 0; j < width ; j++) {
-      squares[i + width * j].innerHTML = newColumn[j];
+    for (let j = 0; j < 4 ; j++) {
+      squares[i + (width * j)].innerHTML = newColumn[j];
     }
   }
 
