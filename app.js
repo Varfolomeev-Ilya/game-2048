@@ -34,10 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
       square.innerHTML = '';
       gridDisplay.appendChild(square);
       squares.push(square);       
-    } 
+    }     
       getRandomNumbers();
   }
-     createBoard();
+      createBoard();
 
   function getRandomNumbers() {
     for (let i = 0; i < 2; i++) {
@@ -59,21 +59,21 @@ document.addEventListener('DOMContentLoaded', () => {
         colorChange(); 
   }
 
-  function goRight() {
+  function goLeft() {
       for (let i = 0; i < width * width ; i++) {
         if (i % 4 === 0) {
           let valtransformateRow = transformateRow(row = sumRow(i));
-          let newRow = valtransformateRow.zeros.concat(valtransformateRow.filteredRow);
-          sumSquaresRow(newRow, squares, i);     
+          let newRow = valtransformateRow.filteredRow.concat(valtransformateRow.zeros);
+          sumSquaresRow(newRow, squares, i);       
         }   
       } 
   }   
      
-  function goLeft() {
+  function goRight() {
     for (let i = 0; i < width * width ; i++) {
       if (i % 4 === 0) {
         let valtransformateRow = transformateRow(row = sumRow(i));
-        let newRow = valtransformateRow.filteredRow.concat(valtransformateRow.zeros);
+        let newRow = valtransformateRow.zeros.concat(valtransformateRow.filteredRow);
         sumSquaresRow(newRow, squares, i);      
       }
     }
@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function sumSquaresRow(newRow, squares, i) { 
     for (let j = 0; j < 4; j++) {
       squares[i+j].innerHTML = newRow[j];
+      console.log(newRow);
     } 
   }
 
@@ -122,18 +123,18 @@ document.addEventListener('DOMContentLoaded', () => {
   
   }
 
-  function goDown() {
-    for (let i = 0; i < 4; i++) {
-      let ValTransformateColumn = transformateColumn(column = sumColumn(i));
-      let newColumn = ValTransformateColumn.zeros.concat(ValTransformateColumn.filteredColumn);
-      sumSquaresColumn(newColumn, squares, i);
-    }
-  }
-
   function goUp() {
     for (let i = 0; i < 4; i++) {
       let ValTransformateColumn = transformateColumn(column = sumColumn(i));
       let newColumn = ValTransformateColumn.filteredColumn.concat(ValTransformateColumn.zeros);
+      sumSquaresColumn(newColumn, squares, i);
+    }
+  }
+
+  function goDown() {
+    for (let i = 0; i < 4; i++) {
+      let ValTransformateColumn = transformateColumn(column = sumColumn(i));
+      let newColumn = ValTransformateColumn.zeros.concat(ValTransformateColumn.filteredColumn);     
       sumSquaresColumn(newColumn, squares, i);
     } 
   }
@@ -150,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function sumSquaresColumn(newColumn, squares, i) {
     for (let j = 0; j < 4 ; j++) {
       squares[i + (width * j)].innerHTML = newColumn[j];
+      console.log(newColumn);
     }
   }
 
