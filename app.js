@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
           checkLoose(); 
           colorChange();                    
     }
-  }
+  }   
 
   function getRandomNumber() {
     let randomNumbers = Math.floor(Math.random() * squares.length);
@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function sumSquaresRow(newRow, squares, i) { 
     for (let j = 0; j < 4; j++) {
       squares[i+j].innerHTML = newRow[j];
-      console.log(newRow);
     } 
   }
 
@@ -119,22 +118,21 @@ document.addEventListener('DOMContentLoaded', () => {
             scoreCounter(combineTotal);
       }
     }  
-        checkWin();
-  
+        checkWin(); 
   }
 
   function goUp() {
     for (let i = 0; i < 4; i++) {
-      let ValTransformateColumn = transformateColumn(column = sumColumn(i));
-      let newColumn = ValTransformateColumn.filteredColumn.concat(ValTransformateColumn.zeros);
+      let valTransformateColumn = transformateColumn(column = sumColumn(i));
+      let newColumn = valTransformateColumn.filteredColumn.concat(valTransformateColumn.zeros);
       sumSquaresColumn(newColumn, squares, i);
     }
   }
 
   function goDown() {
     for (let i = 0; i < 4; i++) {
-      let ValTransformateColumn = transformateColumn(column = sumColumn(i));
-      let newColumn = ValTransformateColumn.zeros.concat(ValTransformateColumn.filteredColumn);     
+      let valTransformateColumn = transformateColumn(column = sumColumn(i));
+      let newColumn = valTransformateColumn.zeros.concat(valTransformateColumn.filteredColumn);     
       sumSquaresColumn(newColumn, squares, i);
     } 
   }
@@ -142,8 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function sumColumn(i) {
     let column = [];
     for (let  j = 0; j < 4; j++) {    
-      column.push(parseInt(squares[i + (width * j)].innerHTML));  
-      
+      column.push(parseInt(squares[i + (width * j)].innerHTML));       
     }   
     return column;  
   }
@@ -151,8 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function sumSquaresColumn(newColumn, squares, i) {
     for (let j = 0; j < 4 ; j++) {
       squares[i + (width * j)].innerHTML = newColumn[j];
-      console.log(newColumn);
-    }
+   }
   }
 
   function transformateColumn() {
@@ -194,24 +190,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }  
 
   function onArrowRightButtonPress() {
+    getRandomNumber();
     sumRowOnMove();
     goRight();
     getRandomNumber();
   }
 
   function onArrowLeftButtonPress() {
+    getRandomNumber();
     sumRowOnMove();
     goLeft();
     getRandomNumber();
   }
 
   function onArrowDownButtonPress() {
+    getRandomNumber();
     sumColumnOnMove();
     goDown();
     getRandomNumber();
   }
 
   function onArrowUpButtonPress() {
+    getRandomNumber();
     sumColumnOnMove();
     goUp();
     getRandomNumber();
@@ -272,9 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function clearResult() {
     resultDisplay.innerHTML = '';
     scoreDisplay.innerHTML = 0;
-    bestDisplay.innerHTML = 0;
     score = 0;
-    bestValue = 0;
     }
   
   function clearBoard() {
