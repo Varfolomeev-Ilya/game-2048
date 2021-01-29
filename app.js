@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       square = document.createElement('div');
       square.innerHTML = '';
       gridDisplay.appendChild(square);
-      squares.push(square);       
+      squares.push(square);    
     }     
       getRandomNumbers();
   }
@@ -43,28 +43,19 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < 2; i++) {
       let randomNumbers = Math.floor(Math.random() * squares.length);
         if (squares[randomNumbers].innerHTML == 0) {
-          squares[randomNumbers].innerHTML = 2; 
-        } 
+           squares[randomNumbers].innerHTML = 2;         
+        }
           checkLoose(); 
           colorChange();                    
     }
   }   
 
-  function getRandomNumber() {
-    let randomNumbers = Math.floor(Math.random() * squares.length);
-      if (squares[randomNumbers].innerHTML == 0) {
-          squares[randomNumbers].innerHTML = 2; 
-        } 
-        checkLoose(); 
-        colorChange(); 
-  }
-
   function goLeft() {
-      for (let i = 0; i < width * width ; i++) {
+      for (let i = 0; i < width * width; i++) {
         if (i % 4 === 0) {
           let valtransformateRow = transformateRow(row = sumRow(i));
           let newRow = valtransformateRow.filteredRow.concat(valtransformateRow.zeros);
-          sumSquaresRow(newRow, squares, i);       
+          sumSquaresRow(newRow, squares, i);     
         }   
       } 
   }   
@@ -74,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (i % 4 === 0) {
         let valtransformateRow = transformateRow(row = sumRow(i));
         let newRow = valtransformateRow.zeros.concat(valtransformateRow.filteredRow);
-        sumSquaresRow(newRow, squares, i);      
+        sumSquaresRow(newRow, squares, i);   
       }
     }
   }
@@ -89,12 +80,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function sumSquaresRow(newRow, squares, i) { 
     for (let j = 0; j < 4; j++) {
-      squares[i+j].innerHTML = newRow[j];
-    } 
+      if (j === 0 && i === 0)  {
+          squares[i].innerHTML = newRow[j];  
+      } else { 
+          squares[i+j].innerHTML = newRow[j];    
+      }
+    }  
+
   }
 
   function transformateRow(row) {
-    let filteredRow = row.filter(num => num) 
+    let filteredRow = row.filter(a => a);
     let missing = 4 - filteredRow.length;
     let zeros = Array(missing).fill('');
     return {zeros,
@@ -110,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
   } 
 
   function sumRowOnMove() {
-    for (let i = 0; i < 15 ; i++) {
-      let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML);
+    for (let i = 0; i < 15; i++) {
+      let combineTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+1].innerHTML) ;
         if (squares[i].innerHTML === squares[i+1].innerHTML) {
             squares[i].innerHTML = combineTotal;
             squares[i+1].innerHTML = 0;
@@ -140,16 +136,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function sumColumn(i) {
     let column = [];
     for (let  j = 0; j < 4; j++) {    
-      column.push(parseInt(squares[i + (width * j)].innerHTML));       
-    }   
+      column.push(parseInt(squares[i + (width * j)].innerHTML));   
+    }  
     return column;  
   }
 
   function sumSquaresColumn(newColumn, squares, i) {
     for (let j = 0; j < 4 ; j++) {
-      squares[i + (width * j)].innerHTML = newColumn[j];
-   }
-  }
+      if (i === 0 && j === 0) {
+        squares[i].innerHTML = newColumn[j];
+      }  else {
+          squares[i + width * j].innerHTML = newColumn[j];
+      }
+    }
+  }      
 
   function transformateColumn() {
     let filteredColumn = column.filter(num => num);
@@ -190,31 +190,31 @@ document.addEventListener('DOMContentLoaded', () => {
   }  
 
   function onArrowRightButtonPress() {
-    getRandomNumber();
+    getRandomNumbers();
     sumRowOnMove();
     goRight();
-    getRandomNumber();
+    colorChange();
   }
 
   function onArrowLeftButtonPress() {
-    getRandomNumber();
+    getRandomNumbers();
     sumRowOnMove();
     goLeft();
-    getRandomNumber();
+    colorChange();
   }
 
   function onArrowDownButtonPress() {
-    getRandomNumber();
+    getRandomNumbers();
     sumColumnOnMove();
     goDown();
-    getRandomNumber();
+    colorChange();
   }
 
   function onArrowUpButtonPress() {
-    getRandomNumber();
+    getRandomNumbers();
     sumColumnOnMove();
     goUp();
-    getRandomNumber();
+    colorChange();
   }
 
   function checkWin() {
