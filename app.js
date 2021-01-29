@@ -51,20 +51,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }   
 
   function goLeft() {
-      for (let i = 0; i < width * width; i++) {
-        if (i % 4 === 0) {
-          let valtransformateRow = transformateRow(row = sumRow(i));
-          let newRow = valtransformateRow.filteredRow.concat(valtransformateRow.zeros);
-          sumSquaresRow(newRow, squares, i);     
-        }   
-      } 
+    for (let i = 0; i < width * width; i++) {
+      if (i % 4 === 0) {
+        let valtransformateRow = transformateRow(row = sumRow(i));
+        let newRow = valtransformateRow.filteredRow.concat(valtransformateRow.zeros);
+        sumSquaresRow(newRow, squares, i);     
+      }   
+    } 
   }   
      
   function goRight() {
     for (let i = 0; i < width * width ; i++) {
       if (i % 4 === 0) {
         let valtransformateRow = transformateRow(row = sumRow(i));
-        let newRow = valtransformateRow.zeros.concat(valtransformateRow.filteredRow);
+        let newRow = valtransformateRow.zeros.concat(valtransformateRow.filteredRow); 
         sumSquaresRow(newRow, squares, i);   
       }
     }
@@ -86,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
           squares[i+j].innerHTML = newRow[j];    
       }
     }  
-
   }
 
   function transformateRow(row) {
@@ -221,10 +220,12 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < squares.length; i++) {
       if (squares[i].innerHTML === '2048') {
           resultDisplay.innerHTML = 'You win';
-        } if (bestValue < squares.length) {
+      } 
+        if (bestValue < squares.length) {
           bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
           localStorage.setItem('bestValue', bestDisplay.innerHTML);
-          } if (scoreStorage < score)  {
+        } 
+          if (scoreStorage < score)  {
             bestDisplay.innerHTML = score > parseInt(bestValue) ? score : bestValue;
             localStorage.setItem('bestValue', bestDisplay.innerHTML);
           }
@@ -240,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       let rowCheck;
       let columnCheck; 
-      let zeros = 0; 
+      let zeros = 0;
       if (zeros === 0) {
         for (let i = 0; i < squares.length; i++) {
           for (let i = 0; i < 15 ; i++) {
@@ -248,7 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
                rowCheck = true;  
            } 
           }
-        }         
+        }    
+
           if (!rowCheck) {
             for (let i = 0; i < 12; i++) {
               if (squares[i].innerHTML === squares[i + width].innerHTML) {
@@ -256,12 +258,13 @@ document.addEventListener('DOMContentLoaded', () => {
               }
             }  
           }
+
           if (!rowCheck && !columnCheck && result.length === 0) {
              resultDisplay.innerHTML = 'Game over';
              document.removeEventListener('keyup', control);  
           }  
       }
-    } 
+  } 
        
   function pressNewGameButton() {   
     clearBoard();
